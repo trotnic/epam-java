@@ -64,6 +64,6 @@ public class User extends Model {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getLogin(), getEmail());
+        return Objects.hash(getId());
     }
 }
