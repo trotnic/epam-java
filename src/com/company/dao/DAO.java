@@ -5,14 +5,14 @@ import java.util.ArrayList;
 
 public abstract class DAO<T, K> {
     public abstract String path();
-    private ArrayList<T> data;
+    private ArrayList<T> cache;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
     public void save() {
         try {
             this.outputStream = new ObjectOutputStream(new FileOutputStream(path()));
-            this.outputStream.writeObject(data);
+            this.outputStream.writeObject(cache);
             this.outputStream.close();
         } catch (FileNotFoundException e) {
 //            e.printStackTrace();
@@ -24,7 +24,7 @@ public abstract class DAO<T, K> {
     public void load() {
         try {
             this.inputStream = new ObjectInputStream(new FileInputStream(path()));
-            this.data = (ArrayList<T>) inputStream.readObject();
+            this.cache = (ArrayList<T>) inputStream.readObject();
             this.inputStream.close();
         } catch (FileNotFoundException e) {
 //            e.printStackTrace();
@@ -36,20 +36,20 @@ public abstract class DAO<T, K> {
     }
 
     public DAO() {
-        this.data = new ArrayList<>();
+        this.cache = new ArrayList<>();
     }
 
     public void create(T item) {
         try {
-            this.data.add(item);
+            this.cache.add(item);
         } catch (Exception e) {
 
         }
     }
 
-    public T getById(K key) {
+    public T getBykEY(K key) {
         try {
-            for (T item : data) {
+            for (T item : cache) {
                 if (item.hashCode() == key.hashCode()) {
                     return item;
                 }
@@ -58,18 +58,18 @@ public abstract class DAO<T, K> {
         } catch (IllegalArgumentException e) {
 
         }
-        return data.get(0);
+        return cache.get(0);
     }
 
     public ArrayList<T> getAll() {
-        return this.data;
+        return this.cache;
     }
 
     public void update(T item) {
         try {
-            for (int i = 0; i < this.data.size(); i++) {
-                if (this.data.get(i).hashCode() == item.hashCode()) {
-                    this.data.set(i, item);
+            for (int i = 0; i < this.cache.size(); i++) {
+                if (this.cache.get(i).hashCode() == item.hashCode()) {
+                    this.cache.set(i, item);
                 }
             }
         } catch(Exception e) {
@@ -77,10 +77,10 @@ public abstract class DAO<T, K> {
         }
     }
 
-    public T delete(K key) {
+    public void delete(K key) {
         try {
             // Intellij's foreach with a closure
-            this.data.removeIf(item -> item.hashCode() == key.hashCode());
+            this.cache.removeIf(item -> item.hashCode() == key.hashCode());
         } catch(Exception e) {
 
         }
