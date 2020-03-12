@@ -9,17 +9,17 @@ import java.util.Scanner;
 public class MainView {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Выберите то, что хотите сделать : 1)Создать сущность; 2)Просмотреть существующие сущности в файлах; 3)Завершить работу;");
-        int choose = sc.nextInt();
-        switch (choose){
+        System.out.println("Choose one to do:\n1)Create entity\n2)Check entities for existence\n3)Exit\n");
+        int choice = sc.nextInt();
+        switch (choice){
             case 1:
-                System.out.println("1)Administrator; 2)Announcement; 3)Common User; 4)Order; 5)Position; 6)Restaurant;");
+                System.out.println("1)Administrator;\n2)Announcement;\n3)Common User;\n4)Order;\n5)Position;\n6)Restaurant;\n");
                 int entity = sc.nextInt();
                 switch (entity){
                     case 1:
                         Administrator administrator = new Administrator();
 
-                        System.out.println("Administrator создан:"+administrator.toString());
+                        System.out.println("Administrator created:"+administrator.toString());
 
                         AdministratorDAO administratorDAO = new AdministratorDAO();
 
@@ -27,12 +27,12 @@ public class MainView {
                         administratorDAO.create(administrator);
                         administratorDAO.save();
 
-                        System.out.println("Administrator сохранен");
+                        System.out.println("Administrator saved");
                         break;
                     case 2:
                         Announcement announcement = new Announcement();
 
-                        System.out.println("Announcement создан:" + announcement.toString());
+                        System.out.println("Announcement created:" + announcement.toString());
 
                         AnnouncementDAO announcementDAO = new AnnouncementDAO();
 
@@ -43,7 +43,7 @@ public class MainView {
                     case 3:
                         CommonUser commonUser = new CommonUser();
 
-                        System.out.println("Common User создан:"+commonUser.toString());
+                        System.out.println("Common User created:"+commonUser.toString());
 
                         CommonUserDAO commonUserDAO = new CommonUserDAO();
 
@@ -54,7 +54,7 @@ public class MainView {
                     case 4:
                         Order order = new Order();
 
-                        System.out.println("Order создан:"+order.toString());
+                        System.out.println("Order created:"+order.toString());
 
                         OrderDAO orderDAO = new OrderDAO();
 
@@ -65,7 +65,7 @@ public class MainView {
                     case 5:
                         Position position = new Position();
 
-                        System.out.println("Position создан:"+position.toString());
+                        System.out.println("Position created:"+position.toString());
 
                         PositionDAO positionDAO = new PositionDAO();
 
@@ -76,7 +76,7 @@ public class MainView {
                     case 6:
                         Restaurant restaurant = new Restaurant();
 
-                        System.out.println("Restaurant создан:"+restaurant.toString());
+                        System.out.println("Restaurant created:"+restaurant.toString());
 
                         RestaurantDAO restaurantDAO = new RestaurantDAO();
 
@@ -85,12 +85,12 @@ public class MainView {
                         restaurantDAO.save();
                         break;
                     default:
-                        System.out.println("Некорректные данные");
+                        System.out.println("Invalid input data");
                         break;
                 }
                 break;
             case 2:
-                System.out.println("1)Administrator; 2)Announcement; 3)Common User; 4)Order; 5)Position; 6)Restaurant;");
+                System.out.println("1)Administrator;\n2)Announcement;\n3)Common User;\n4)Order;\n5)Position;\n6)Restaurant;\n");
                 entity = sc.nextInt();
                 switch (entity){
                     case 1:
@@ -100,7 +100,7 @@ public class MainView {
 
                         ArrayList<Administrator> administrators = administratorDAO.getAll();
 
-                        System.out.println("Administrator загружены");
+                        System.out.println("Administrator loaded");
                         for (Administrator element:administrators) {
                             System.out.println(element.toString());
                         }
@@ -109,7 +109,7 @@ public class MainView {
                         AnnouncementDAO announcementDAO = new AnnouncementDAO();
 
                         announcementDAO.load();
-                        System.out.println("Announcement загружены");
+                        System.out.println("Announcement loaded");
 
                         ArrayList<Announcement> announcements = announcementDAO.getAll();
 
@@ -121,7 +121,7 @@ public class MainView {
                         CommonUserDAO commonUserDAO = new CommonUserDAO();
 
                         commonUserDAO.load();
-                        System.out.println("Common User загружены");
+                        System.out.println("Common User loaded");
 
                         ArrayList<CommonUser>commonUsers = commonUserDAO.getAll();
 
@@ -133,7 +133,7 @@ public class MainView {
                         OrderDAO orderDAO = new OrderDAO();
 
                         orderDAO.load();
-                        System.out.println("Order загружены");
+                        System.out.println("Order loaded");
 
                         ArrayList<Order>orders = orderDAO.getAll();
 
@@ -145,7 +145,7 @@ public class MainView {
                         PositionDAO positionDAO = new PositionDAO();
 
                         positionDAO.load();
-                        System.out.println("Position загружены");
+                        System.out.println("Position loaded");
 
                         ArrayList<Position>positions = positionDAO.getAll();
 
@@ -157,7 +157,7 @@ public class MainView {
                         RestaurantDAO restaurantDAO = new RestaurantDAO();
 
                         restaurantDAO.load();
-                        System.out.println("Restaurant загружены");
+                        System.out.println("Restaurant loaded");
 
                         ArrayList<Restaurant>restaurants = restaurantDAO.getAll();
 
@@ -166,14 +166,14 @@ public class MainView {
                         }
                         break;
                     default:
-                        System.out.println("Некорректные данные");
+                        System.out.println("Invalid input data");
                         break;
                 }
                 break;
             case 3:
                 System.exit(0);
             default:
-                System.out.println("Некорректные данные");
+                System.out.println("Invalid input data");
                 break;
         }
         main(args);
