@@ -33,6 +33,6 @@ public class Order extends Model {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getOrderItem());
+        return Objects.hash(id);
     }
 }

@@ -53,6 +53,6 @@ public class Restaurant extends Model {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getAdmin(), getName());
+        return Objects.hash(getId());
     }
 }

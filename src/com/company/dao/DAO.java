@@ -21,7 +21,7 @@ public abstract class DAO<T, K> {
         }
     }
 
-    public void load() {
+    public void upload() {
         try {
             this.inputStream = new ObjectInputStream(new FileInputStream(path()));
             this.cache = (ArrayList<T>) inputStream.readObject();
@@ -47,7 +47,7 @@ public abstract class DAO<T, K> {
         }
     }
 
-    public T getBykEY(K key) {
+    public T getByKey(K key) {
         try {
             for (T item : cache) {
                 if (item.hashCode() == key.hashCode()) {
