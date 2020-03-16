@@ -21,7 +21,7 @@ public abstract class DAO<T, K> {
         }
     }
 
-    public void upload() {
+    public void load() {
         try {
             this.inputStream = new ObjectInputStream(new FileInputStream(path()));
             this.cache = (ArrayList<T>) inputStream.readObject();
