@@ -2,15 +2,27 @@ package com.company.models;
 
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 public class User extends Model {
-    private Long id;
+    private String id;
     private String name;
     private String login;
     private String email;
 
-    public Long getId() {
-        return id;
+    public User() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public User(String name, String login, String email) {
+        this();
+        this.name = name;
+        this.login = login;
+        this.email = email;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public String getName() {
@@ -23,10 +35,6 @@ public class User extends Model {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setName(String name) {
@@ -44,7 +52,7 @@ public class User extends Model {
     @Override
     public String toString() {
         return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
+//                .add("id=" + id)
                 .add("name='" + name + "'")
                 .add("login='" + login + "'")
                 .add("email='" + email + "'")

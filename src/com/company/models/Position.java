@@ -7,6 +7,13 @@ public class Position extends Model {
     private String name;
     private String amount;
 
+    public Position(final String name, final String amount) {
+        this.name = name;
+        this.amount = amount;
+    }
+
+    public Position() {}
+
     public String getName() {
         return name;
     }

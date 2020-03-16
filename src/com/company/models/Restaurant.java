@@ -2,14 +2,25 @@ package com.company.models;
 
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 public class Restaurant extends Model {
-    private Long id;
-    private Administrator admin;
+    private String id;
     private String name;
+    private Administrator admin;
 
-    public Long getId() {
-        return id;
+    public Restaurant() {
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public Restaurant(final String name, final Administrator admin) {
+        this();
+        this.name = name;
+        this.admin = admin;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public Administrator getAdmin() {
@@ -18,10 +29,6 @@ public class Restaurant extends Model {
 
     public String getName() {
         return name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void setAdmin(Administrator admin) {

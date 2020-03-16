@@ -1,10 +1,13 @@
 package com.company.models;
 
-import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Administrator extends User {
     private Restaurant ownership;
+
+    public Administrator(final String login, final String email, final String name) {
+        super(name, login, email);
+    }
 
     public Restaurant getOwnership() {
         return ownership;
@@ -17,6 +20,7 @@ public class Administrator extends User {
     @Override
     public String toString() {
         return new StringJoiner(", ", Administrator.class.getSimpleName() + "[", "]")
+                .add(super.toString())
                 .add("ownership=" + ownership)
                 .toString();
     }
@@ -26,11 +30,13 @@ public class Administrator extends User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Administrator that = (Administrator) o;
-        return Objects.equals(getOwnership(), that.getOwnership());
+        return
+                super.equals(that) &&
+                getOwnership().equals(that.getOwnership());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOwnership());
+        return super.hashCode();
     }
 }

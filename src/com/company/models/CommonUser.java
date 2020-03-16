@@ -2,13 +2,18 @@ package com.company.models;
 
 import com.company.collections.SocialStatus;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.StringJoiner;
 
 public class CommonUser extends User {
     private SocialStatus status;
     private List<Order> takenOrders;
+
+    public CommonUser(final String login, final String email, final String name) {
+        super(name, login, email);
+        this.takenOrders = new ArrayList<>();
+    }
 
     public SocialStatus getStatus() {
         return status;
@@ -29,6 +34,7 @@ public class CommonUser extends User {
     @Override
     public String toString() {
         return new StringJoiner(", ", CommonUser.class.getSimpleName() + "[", "]")
+                .add(super.toString())
                 .add("status=" + status)
                 .add("takenOrders=" + takenOrders)
                 .toString();
@@ -40,12 +46,13 @@ public class CommonUser extends User {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         CommonUser that = (CommonUser) o;
-        return getStatus() == that.getStatus() &&
+        return  super.equals(that) &&
+                getStatus() == that.getStatus() &&
                 getTakenOrders().equals(that.getTakenOrders());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getStatus(), getTakenOrders());
+        return super.hashCode();
     }
 }

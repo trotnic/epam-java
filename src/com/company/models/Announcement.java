@@ -1,14 +1,25 @@
 package com.company.models;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class Announcement extends Model {
+    private String id;
     private Restaurant owner;
     private List<Position> positions;
     private Date date;
+
+    public Announcement() {
+        this.id = UUID.randomUUID().toString();
+        this.date = new Date();
+        this.positions = new ArrayList<>();
+    }
+
+    public Announcement(Restaurant owner) {
+        this();
+        this.owner = owner;
+    }
+
+    public String getId() { return this.id; };
 
     public Restaurant getOwner() {
         return owner;
@@ -26,6 +37,10 @@ public class Announcement extends Model {
         this.owner = owner;
     }
 
+    public void addPosition(Position position) {
+        this.positions.add(position);
+    }
+
     public void setPositions(List<Position> positions) {
         this.positions = positions;
     }
@@ -37,6 +52,7 @@ public class Announcement extends Model {
     @Override
     public String toString() {
         return new StringJoiner(", ", Announcement.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
                 .add("owner=" + owner)
                 .add("positions=" + positions)
                 .add("date=" + date)
@@ -55,6 +71,6 @@ public class Announcement extends Model {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOwner(), getPositions(), getDate());
+        return Objects.hash(getId());
     }
 }
