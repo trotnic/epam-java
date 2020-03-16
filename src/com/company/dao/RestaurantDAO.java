@@ -2,7 +2,7 @@ package com.company.dao;
 
 import com.company.models.Restaurant;
 
-public class RestaurantDAO extends DAO<Restaurant, Long> {
+public class RestaurantDAO extends DAO<Restaurant, String> {
 
     private static String path = "data/restaurant.dat";
 
