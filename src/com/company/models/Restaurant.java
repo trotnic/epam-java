@@ -1,38 +1,45 @@
 package com.company.models;
 
-import java.util.Objects;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
 public class Restaurant extends Model {
     private String id;
     private String name;
-    private Administrator admin;
+    private List<User> administrators;
 
     public Restaurant() {
         this.id = UUID.randomUUID().toString();
+        this.administrators = new ArrayList<>();
     }
 
-    public Restaurant(final String name, final Administrator admin) {
+    public Restaurant(final String name, final User admin) {
         this();
         this.name = name;
-        this.admin = admin;
+        this.administrators.add(admin);
     }
 
     public String getId() {
         return this.id;
     }
 
-    public Administrator getAdmin() {
-        return admin;
+    public List<User> getAdmins() {
+        return administrators;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setAdmin(Administrator admin) {
-        this.admin = admin;
+    public void addAdmin(User admin) {
+        this.administrators.add(admin);
+    }
+
+    public void removeAdmin(User admin) {
+        for(int i = 0; i < this.administrators.size(); i++) {
+            if(this.administrators.get(i).hashCode() == admin.hashCode()) {
+                this.administrators.remove(i);
+            }
+        }
     }
 
     public void setName(String name) {
@@ -43,7 +50,7 @@ public class Restaurant extends Model {
     public String toString() {
         return new StringJoiner(", ", Restaurant.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("admin=" + admin)
+                .add("admin=" + administrators)
                 .add("name='" + name + "'")
                 .toString();
     }
@@ -54,7 +61,7 @@ public class Restaurant extends Model {
         if (o == null || getClass() != o.getClass()) return false;
         Restaurant that = (Restaurant) o;
         return getId().equals(that.getId()) &&
-                getAdmin().equals(that.getAdmin()) &&
+                getAdmins().equals(that.getAdmins()) &&
                 getName().equals(that.getName());
     }
 

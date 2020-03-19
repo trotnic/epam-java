@@ -1,17 +1,24 @@
 package com.company.models;
 
-import java.util.Objects;
-import java.util.StringJoiner;
-import java.util.UUID;
+import com.company.collections.Roles;
+import com.company.collections.SocialStatus;
+
+import java.util.*;
 
 public class User extends Model {
     private String id;
     private String name;
     private String login;
     private String email;
+    private Roles role;
+    private List<Announcement> orderList;
+    private SocialStatus status;
 
     public User() {
         this.id = UUID.randomUUID().toString();
+        this.orderList = new ArrayList<>();
+        this.role = Roles.COMMON;
+        this.status = SocialStatus.UNDEFINED;
     }
 
     public User(String name, String login, String email) {
@@ -37,6 +44,18 @@ public class User extends Model {
         return email;
     }
 
+    public Roles role() {
+        return this.role;
+    }
+
+    public List<Announcement> getOrders() {
+        return this.orderList;
+    }
+
+    public SocialStatus getStatus() {
+        return status;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -49,13 +68,28 @@ public class User extends Model {
         this.email = email;
     }
 
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
+    public void addOrder(Announcement order) {
+        this.orderList.add(order);
+    }
+
+    public void setStatus(SocialStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
-//                .add("id=" + id)
+                .add("id=" + id)
                 .add("name='" + name + "'")
                 .add("login='" + login + "'")
                 .add("email='" + email + "'")
+                .add("role='" + role + "'")
+                .add("status='" + status + "'")
+                .add("orderList=" + orderList)
                 .toString();
     }
 
