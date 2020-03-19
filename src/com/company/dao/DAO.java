@@ -1,9 +1,13 @@
 package com.company.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.util.ArrayList;
 
 public abstract class DAO<T, K> {
+    static Logger log = LogManager.getLogger();
     public abstract String path();
     private ArrayList<T> cache;
     private ObjectInputStream inputStream;
@@ -14,10 +18,9 @@ public abstract class DAO<T, K> {
             this.outputStream = new ObjectOutputStream(new FileOutputStream(path()));
             this.outputStream.writeObject(cache);
             this.outputStream.close();
-        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
+            log.info("Objects saved. Amount: " + cache.size());
         } catch (IOException e) {
-//            e.printStackTrace();
+            log.info(e);
         }
     }
 
@@ -26,12 +29,9 @@ public abstract class DAO<T, K> {
             this.inputStream = new ObjectInputStream(new FileInputStream(path()));
             this.cache = (ArrayList<T>) inputStream.readObject();
             this.inputStream.close();
-        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-        } catch (IOException e) {
-//            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
+            log.info("Objects loaded. Amount: " + cache.size());
+        } catch (ClassNotFoundException | IOException e) {
+            log.info(e);
         }
     }
 
@@ -42,8 +42,9 @@ public abstract class DAO<T, K> {
     public void create(T item) {
         try {
             this.cache.add(item);
+            log.info("Created object: " + item);
         } catch (Exception e) {
-
+            log.info(e);
         }
     }
 
@@ -56,7 +57,7 @@ public abstract class DAO<T, K> {
             }
             throw new IllegalArgumentException();
         } catch (IllegalArgumentException e) {
-
+            log.info("Object not found. " + e);
         }
         return cache.get(0);
     }
@@ -65,24 +66,28 @@ public abstract class DAO<T, K> {
         return this.cache;
     }
 
-    public void update(T item) {
+    public T updateOrCreate(T item) {
         try {
             for (int i = 0; i < this.cache.size(); i++) {
                 if (this.cache.get(i).hashCode() == item.hashCode()) {
                     this.cache.set(i, item);
+                    return this.cache.get(i);
                 }
             }
         } catch(Exception e) {
-
+            log.info("Object not found. " + e);
         }
+        create(item);
+        return item;
     }
 
     public void delete(K key) {
         try {
             // Intellij's foreach with a closure
             this.cache.removeIf(item -> item.hashCode() == key.hashCode());
+            log.info("Object removed.");
         } catch(Exception e) {
-
+            log.info("Object not found.");
         }
     }
 }
