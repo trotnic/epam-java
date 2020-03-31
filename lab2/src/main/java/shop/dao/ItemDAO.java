@@ -8,10 +8,7 @@ import org.apache.logging.log4j.Logger;
 import shop.entity.Item;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class ItemDAO implements DAO<Item> {
     static Logger logger = LogManager.getLogger();
@@ -85,6 +82,11 @@ public class ItemDAO implements DAO<Item> {
     public void delete(Item obj) {
         logger.info("Execute delete:items");
         cache.remove(obj);
+    }
+
+    @Override
+    public Optional<Item> getByName(String name) {
+        return cache.stream().filter(e -> e.getName().equals(name)).findFirst();
     }
 
     @Override

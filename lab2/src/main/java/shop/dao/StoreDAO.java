@@ -5,13 +5,11 @@ package shop.dao;/*
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import shop.entity.Item;
 import shop.entity.Store;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class StoreDAO implements DAO<Store> {
     static Logger logger = LogManager.getLogger();
@@ -78,6 +76,11 @@ public class StoreDAO implements DAO<Store> {
     @Override
     public void delete(Store obj) {
         cache.remove(obj);
+    }
+
+    @Override
+    public Optional<Store> getByName(String name) {
+        return cache.stream().filter(e -> e.getName().equals(name)).findFirst();
     }
 
     @Override
