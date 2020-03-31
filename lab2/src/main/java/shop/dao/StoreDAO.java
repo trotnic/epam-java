@@ -3,7 +3,6 @@ package shop.dao;/*
  * @author vladislav on 3/31/20
  */
 
-import shop.entity.Item;
 import shop.entity.Store;
 
 import java.io.*;

@@ -3,7 +3,6 @@ package shop.dao;/*
  * @author vladislav on 3/31/20
  */
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface DAO<T> {
