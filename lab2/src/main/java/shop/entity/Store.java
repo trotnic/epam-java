@@ -5,6 +5,7 @@ package shop.entity;/*
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Store {
@@ -58,6 +59,21 @@ public class Store {
                 .add("items=" + items.size())
                 .add("feedbackList=" + feedbackList)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return getName().equals(store.getName()) &&
+                Objects.equals(getItems(), store.getItems()) &&
+                Objects.equals(getFeedbackList(), store.getFeedbackList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getItems(), getFeedbackList());
     }
 
     public static class Builder {

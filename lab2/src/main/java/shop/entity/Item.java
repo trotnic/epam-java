@@ -71,6 +71,22 @@ public class Item {
                 .toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return getName().equals(item.getName()) &&
+                getPrice().equals(item.getPrice()) &&
+                getCount().equals(item.getCount()) &&
+                Objects.equals(getStores(), item.getStores());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getPrice(), getCount(), getStores());
+    }
+
     public static class Builder {
         private Item entity;
 
