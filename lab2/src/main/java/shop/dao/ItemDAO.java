@@ -3,6 +3,8 @@ package shop.dao;/*
  * @author vladislav on 3/31/20
  */
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import shop.entity.Item;
 
 import java.io.*;
@@ -12,6 +14,7 @@ import java.util.StringJoiner;
 import java.util.StringTokenizer;
 
 public class ItemDAO implements DAO<Item> {
+    static Logger logger = LogManager.getLogger();
 
     private final String path = "data/item.txt";
     private List<Item> cache;
@@ -27,6 +30,7 @@ public class ItemDAO implements DAO<Item> {
 
     @Override
     public void read() {
+        logger.info("Execute read:items");
         try {
             String line;
             BufferedReader br = new BufferedReader(new FileReader(path()));
@@ -43,15 +47,16 @@ public class ItemDAO implements DAO<Item> {
                                 .build());
                 }
             }
-        } catch (FileNotFoundException e) {
-
+            logger.info("Read " + cache.toString().getBytes().length + "bytes");
+            br.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("Exception: " + e);
         }
     }
 
     @Override
     public void save() {
+        logger.info("Execute save:items");
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(path()));
             StringJoiner result = new StringJoiner("_");
@@ -61,27 +66,30 @@ public class ItemDAO implements DAO<Item> {
                         .add(e.getName())
                         .add("\n");
             });
+            logger.info("Write " + cache.toString().getBytes().length + "bytes");
             bw.write(result.toString());
             bw.close();
-
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("Exception: " + e);
         }
     }
 
     @Override
     public void update(Item older, Item newer) {
+        logger.info("Execute update:items");
         Integer idx = cache.indexOf(older);
         cache.set(idx, newer);
     }
 
     @Override
     public void delete(Item obj) {
+        logger.info("Execute delete:items");
         cache.remove(obj);
     }
 
     @Override
     public List<Item> getCache() {
+        logger.info("Execute getAll:items");
         return cache;
     }
 }

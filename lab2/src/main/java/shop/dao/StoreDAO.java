@@ -3,6 +3,8 @@ package shop.dao;/*
  * @author vladislav on 3/31/20
  */
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import shop.entity.Store;
 
 import java.io.*;
@@ -12,6 +14,7 @@ import java.util.StringJoiner;
 import java.util.StringTokenizer;
 
 public class StoreDAO implements DAO<Store> {
+    static Logger logger = LogManager.getLogger();
 
     private final String path = "data/store.txt";
     private List<Store> cache;
@@ -27,6 +30,7 @@ public class StoreDAO implements DAO<Store> {
 
     @Override
     public void read() {
+        logger.info("Execute read:store");
         try {
             String line;
             BufferedReader br = new BufferedReader(new FileReader(path()));
@@ -39,16 +43,16 @@ public class StoreDAO implements DAO<Store> {
                                     .build());
                 }
             }
+            logger.info("Read " + cache.toString().getBytes().length + "bytes");
             br.close();
-        } catch (FileNotFoundException e) {
-
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("Exception: " + e);
         }
     }
 
     @Override
     public void save() {
+        logger.info("Execute save:stores");
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(path()));
             StringJoiner result = new StringJoiner("_");
@@ -56,6 +60,7 @@ public class StoreDAO implements DAO<Store> {
                 result.add(e.getName()).add("\n");
             });
             bw.write(result.toString());
+            logger.info("Write " + cache.toString().getBytes().length + "bytes");
             bw.close();
 
         } catch (IOException e) {
@@ -65,6 +70,7 @@ public class StoreDAO implements DAO<Store> {
 
     @Override
     public void update(Store older, Store newer) {
+        logger.info("Execute update:stores");
         Integer idx = cache.indexOf(older);
         cache.set(idx, newer);
     }

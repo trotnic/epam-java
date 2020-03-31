@@ -3,6 +3,9 @@ package shop.entity;/*
  * @author vladislav on 3/30/20
  */
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.*;
 
 public class Item {
@@ -18,11 +21,11 @@ public class Item {
         this.stores = new ArrayList<Store>();
     }
 
-    public Item(String name, int price) {
+    public Item(String name, int price, int count) {
         this();
         this.name = name;
         this.price = price;
-        this.count += 1;
+        this.count = count;
     }
 
     public String getName() {

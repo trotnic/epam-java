@@ -1,16 +1,11 @@
 package shop.util;
 
-//import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.Assert;
 import org.junit.Test;
-//import org.junit.jupiter.api.Test;
 import shop.entity.Item;
 import shop.entity.Store;
 
-import java.util.Arrays;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /*
  * @project lab2
@@ -175,6 +170,6 @@ public class SessionTest {
                         .withName("TwiStore")
                         .build()
         };
-        assertEquals(expected, Task.distinctStores(testable));
+        Assert.assertEquals(expected, Task.distinctStores(testable));
     }
 }
