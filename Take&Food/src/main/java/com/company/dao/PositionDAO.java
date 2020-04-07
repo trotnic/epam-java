@@ -1,8 +1,8 @@
 package com.company.dao;
 
-import com.company.models.Position;
+import com.company.models.Dish;
 
-public class PositionDAO extends DAO<Position, String> {
+public class PositionDAO extends DAO<Dish, String> {
 
     private static String path = "data/position.dat";
 

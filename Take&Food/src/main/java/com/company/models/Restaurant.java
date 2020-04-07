@@ -5,11 +5,11 @@ import java.util.*;
 public class Restaurant extends Model {
     private String id;
     private String name;
-    private List<User> administrators;
+    private HashSet<User> administrators;
 
     public Restaurant() {
         this.id = UUID.randomUUID().toString();
-        this.administrators = new ArrayList<>();
+        this.administrators = new HashSet<>();
     }
 
     public Restaurant(final String name, final User admin) {
@@ -18,33 +18,16 @@ public class Restaurant extends Model {
         this.administrators.add(admin);
     }
 
-    public String getId() {
-        return this.id;
-    }
-
-    public List<User> getAdmins() {
-        return administrators;
-    }
-
+    public String getId() { return id; }
+    public HashSet<User> getAdministrators() { return administrators; }
     public String getName() {
         return name;
     }
-
     public void addAdmin(User admin) {
-        this.administrators.add(admin);
+        administrators.add(admin);
     }
-
-    public void removeAdmin(User admin) {
-        for(int i = 0; i < this.administrators.size(); i++) {
-            if(this.administrators.get(i).hashCode() == admin.hashCode()) {
-                this.administrators.remove(i);
-            }
-        }
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void removeAdmin(User admin) { administrators.remove(admin); }
+    public void setName(String name) { this.name = name; }
 
     @Override
     public String toString() {
@@ -61,12 +44,12 @@ public class Restaurant extends Model {
         if (o == null || getClass() != o.getClass()) return false;
         Restaurant that = (Restaurant) o;
         return getId().equals(that.getId()) &&
-                getAdmins().equals(that.getAdmins()) &&
-                getName().equals(that.getName());
+                getName().equals(that.getName()) &&
+                Objects.equals(getAdministrators(), that.getAdministrators());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        return Objects.hash(getId(), getName(), getAdministrators());
     }
 }

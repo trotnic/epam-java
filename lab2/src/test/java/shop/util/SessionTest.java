@@ -5,6 +5,9 @@ import org.junit.Test;
 import shop.entity.Item;
 import shop.entity.Store;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static org.junit.Assert.assertEquals;
 
 /*
@@ -170,6 +173,8 @@ public class SessionTest {
                         .withName("TwiStore")
                         .build()
         };
+
+
         Assert.assertEquals(expected, Task.distinctStores(testable));
     }
 }

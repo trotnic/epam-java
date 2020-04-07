@@ -41,12 +41,12 @@ public class MainView {
                         System.out.println("Announcement created:" + announcement.toString());
                         break;
                     case 4:
-                        Position position = PositionBuilder.consolePosition();
+                        Dish dish = PositionBuilder.consolePosition();
                         PositionDAO positionDAO = new PositionDAO();
                         positionDAO.load();
-                        positionDAO.create(position);
+                        positionDAO.create(dish);
                         positionDAO.save();
-                        System.out.println("Order created:" + position.toString());
+                        System.out.println("Order created:" + dish.toString());
                         break;
                     case 5:
                         Order order = OrderBuilder.order();
@@ -93,7 +93,7 @@ public class MainView {
                         PositionDAO positionDAO = new PositionDAO();
                         positionDAO.load();
                         System.out.println("Positions loaded");
-                        for (Position element: positionDAO.getAll()) {
+                        for (Dish element: positionDAO.getAll()) {
                             System.out.println(element.toString());
                         }
                         break;

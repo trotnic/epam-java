@@ -2,7 +2,7 @@ package com.company.collections;
 
 public enum SocialStatus {
     STUDENT,
-    WORKER,
+    EMPLOYEE,
     JOBLESS,
     UNDEFINED
 }

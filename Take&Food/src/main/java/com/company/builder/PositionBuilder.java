@@ -1,12 +1,12 @@
 package com.company.builder;
 
-import com.company.models.Position;
+import com.company.models.Dish;
 
 import java.util.Scanner;
 
 public class PositionBuilder {
-    public static Position consolePosition() {
-        Position entity = new Position();
+    public static Dish consolePosition() {
+        Dish entity = new Dish();
         Scanner scan = new Scanner(System.in);
 
         System.out.print("Set position name");

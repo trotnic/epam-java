@@ -4,12 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class DAO<T, K> {
     static Logger log = LogManager.getLogger();
     public abstract String path();
-    private ArrayList<T> cache;
+    private HashSet<T> cache;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
 
@@ -27,7 +27,7 @@ public abstract class DAO<T, K> {
     public void load() {
         try {
             this.inputStream = new ObjectInputStream(new FileInputStream(path()));
-            this.cache = (ArrayList<T>) inputStream.readObject();
+            this.cache = (HashSet<T>) inputStream.readObject();
             this.inputStream.close();
             log.info("Objects loaded. Amount: " + cache.size());
         } catch (ClassNotFoundException | IOException e) {
@@ -36,7 +36,7 @@ public abstract class DAO<T, K> {
     }
 
     public DAO() {
-        this.cache = new ArrayList<>();
+        this.cache = new HashSet<>();
     }
 
     public void create(T item) {
@@ -47,39 +47,39 @@ public abstract class DAO<T, K> {
             log.info(e);
         }
     }
-
-    public T getByKey(K key) {
-        try {
-            for (T item : cache) {
-                if (item.hashCode() == key.hashCode()) {
-                    return item;
-                }
-            }
-            throw new IllegalArgumentException();
-        } catch (IllegalArgumentException e) {
-            log.info("Object not found. " + e);
-        }
-        return cache.get(0);
-    }
-
-    public ArrayList<T> getAll() {
-        return this.cache;
-    }
-
-    public T updateOrCreate(T item) {
-        try {
-            for (int i = 0; i < this.cache.size(); i++) {
-                if (this.cache.get(i).hashCode() == item.hashCode()) {
-                    this.cache.set(i, item);
-                    return this.cache.get(i);
-                }
-            }
-        } catch(Exception e) {
-            log.info("Object not found. " + e);
-        }
-        create(item);
-        return item;
-    }
+//
+//TODO
+//    public T getByKey(K key) {
+//        try {
+//            for (T item : cache) {
+//                if (item.hashCode() == key.hashCode()) {
+//                    return item;
+//                }
+//            }
+//            throw new IllegalArgumentException();
+//        } catch (IllegalArgumentException e) {
+//            log.info("Object not found. " + e);
+//        }
+//        return cache.get(0);
+//    }
+//
+//    public HashSet<T> getAll() { return cache; }
+//
+//TODO
+//    public T updateOrCreate(T item) {
+//        try {
+//            for (int i = 0; i < this.cache.size(); i++) {
+//                if (this.cache.get(i).hashCode() == item.hashCode()) {
+//                    this.cache.set(i, item);
+//                    return this.cache.get(i);
+//                }
+//            }
+//        } catch(Exception e) {
+//            log.info("Object not found. " + e);
+//        }
+//        create(item);
+//        return item;
+//    }
 
     public void delete(K key) {
         try {

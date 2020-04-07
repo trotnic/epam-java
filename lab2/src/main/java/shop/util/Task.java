@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import shop.entity.Item;
 import shop.entity.Store;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
@@ -18,14 +19,14 @@ public class Task {
 
     public static Boolean isPriceGreaterThan(Integer price, Item[] items) {
         logger.info("Execute isPriceGreaterThan:price:items with params: " + price + " " + Arrays.toString(items));
-        return Arrays.stream(items)
+        return List.of(items).parallelStream()
                 .peek(e -> {logger.info("Peek: " + e);})
                 .anyMatch(e -> e.getPrice() > price);
     };
 
     public static Item[] boundaryItems(Item[] items) {
         logger.info("Execute boundaryItems:items with params: " + Arrays.toString(items));
-        List<Item> tmp = Arrays.stream(items)
+        List<Item> tmp = List.of(items).parallelStream()
                 .sorted((e1, e2) -> e1.getCount().compareTo(e2.getCount()))
                 .peek(e -> logger.info("Peek sorted: " + e))
                 .collect(Collectors.toList());
@@ -34,7 +35,7 @@ public class Task {
 
     public static Item[] itemsFilteredWith(Predicate<Item> p, Item[] items) {
         logger.info("Execute itemsFilteredWith:predicate:items with params: " + p + " " + Arrays.toString(items));
-        return Arrays.stream(items)
+        return List.of(items).parallelStream()
                 .filter(p)
                 .peek(e -> logger.info("Peek filtered: " + e))
                 .collect(Collectors.toList()).toArray(Item[]::new);
@@ -42,7 +43,7 @@ public class Task {
 
     public static Item[] itemsSortedByPriceCount(Item[] items) {
         logger.info("Execute itemsSortedByPriceCount:items with params: " + Arrays.toString(items));
-        return Arrays.stream(items).sorted((e1, e2) ->
+        return  List.of(items).parallelStream().sorted((e1, e2) ->
                                             e1.getPrice().compareTo(e2.getPrice()) == 0 ?
                                                 e1.getCount().compareTo(e2.getCount()) :
                                                     e1.getPrice().compareTo(e2.getPrice()))

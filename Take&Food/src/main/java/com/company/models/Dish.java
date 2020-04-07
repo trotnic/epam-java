@@ -3,36 +3,35 @@ package com.company.models;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class Position extends Model {
+public class Dish extends Model {
     private String name;
     private String amount;
 
-    public Position(final String name, final String amount) {
+
+    public Dish() {}
+
+    public Dish(String name, String amount) {
+        this();
         this.name = name;
         this.amount = amount;
     }
 
-    public Position() {}
-
     public String getName() {
         return name;
     }
-
     public String getAmount() {
         return amount;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public void setAmount(String amount) {
         this.amount = amount;
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Position.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", Dish.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
                 .add("amount='" + amount + "'")
                 .toString();
@@ -42,9 +41,9 @@ public class Position extends Model {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Position position = (Position) o;
-        return getName().equals(position.getName()) &&
-                getAmount().equals(position.getAmount());
+        Dish dish = (Dish) o;
+        return getName().equals(dish.getName()) &&
+                getAmount().equals(dish.getAmount());
     }
 
     @Override
