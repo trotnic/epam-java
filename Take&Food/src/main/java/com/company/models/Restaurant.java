@@ -5,28 +5,28 @@ import java.util.*;
 public class Restaurant extends Model {
     private String id;
     private String name;
-    private HashSet<User> administrators;
+    private HashSet<Person> administrators;
 
     public Restaurant() {
         this.id = UUID.randomUUID().toString();
         this.administrators = new HashSet<>();
     }
 
-    public Restaurant(final String name, final User admin) {
+    public Restaurant(final String name, final Person admin) {
         this();
         this.name = name;
         this.administrators.add(admin);
     }
 
     public String getId() { return id; }
-    public HashSet<User> getAdministrators() { return administrators; }
+    public HashSet<Person> getAdministrators() { return administrators; }
     public String getName() {
         return name;
     }
-    public void addAdmin(User admin) {
+    public void addAdmin(Person admin) {
         administrators.add(admin);
     }
-    public void removeAdmin(User admin) { administrators.remove(admin); }
+    public void removeAdmin(Person admin) { administrators.remove(admin); }
     public void setName(String name) { this.name = name; }
 
     @Override

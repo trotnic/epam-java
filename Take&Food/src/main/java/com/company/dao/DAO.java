@@ -4,49 +4,72 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import oracle.jdbc.OracleDriver;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashSet;
 
 public abstract class DAO<T, K> {
     static Logger log = LogManager.getLogger();
-    public abstract String path();
-    private HashSet<T> cache;
-    private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+//    public abstract String path();
+    public abstract void create(T item) throws SQLException;
+    public abstract T get(K key);
+    public abstract void update(T item, String... values);
+    public abstract void delete(T item);
+//    private HashSet<T> cache;
+//    private ObjectInputStream inputStream;
+//    private ObjectOutputStream outputStream;
+    protected Connection connection;
 
-    public void save() {
+    public DAO()  {
+
+        String dbURL1 = "jdbc:oracle:thin:sys/oracle@localhost:1521:takeandfood";
+
         try {
-            this.outputStream = new ObjectOutputStream(new FileOutputStream(path()));
-            this.outputStream.writeObject(cache);
-            this.outputStream.close();
-            log.info("Objects saved. Amount: " + cache.size());
-        } catch (IOException e) {
-            log.info(e);
+            connection = DriverManager.getConnection(dbURL1);
+            if(connection != null) {
+                log.info("Successfully connected: " + connection);
+            }
+        } catch (SQLException ex) {
+            log.info(ex);
         }
     }
 
-    public void load() {
-        try {
-            this.inputStream = new ObjectInputStream(new FileInputStream(path()));
-            this.cache = (HashSet<T>) inputStream.readObject();
-            this.inputStream.close();
-            log.info("Objects loaded. Amount: " + cache.size());
-        } catch (ClassNotFoundException | IOException e) {
-            log.info(e);
-        }
-    }
+//    public void save() {
+//        try {
+//            this.outputStream = new ObjectOutputStream(new FileOutputStream(path()));
+//            this.outputStream.writeObject(cache);
+//            this.outputStream.close();
+//            log.info("Objects saved. Amount: " + cache.size());
+//        } catch (IOException e) {
+//            log.info(e);
+//        }
+//    }
+//
+//    public void load() {
+//        try {
+//            this.inputStream = new ObjectInputStream(new FileInputStream(path()));
+//            this.cache = (HashSet<T>) inputStream.readObject();
+//            this.inputStream.close();
+//            log.info("Objects loaded. Amount: " + cache.size());
+//        } catch (ClassNotFoundException | IOException e) {
+//            log.info(e);
+//        }
+//    }
 
-    public DAO() {
-        this.cache = new HashSet<>();
-    }
+//    public DAO() {
+//        this.cache = new HashSet<>();
+//    }
 
-    public void create(T item) {
-        try {
-            this.cache.add(item);
-            log.info("Created object: " + item);
-        } catch (Exception e) {
-            log.info(e);
-        }
-    }
+//    public void create(T item) {
+//        try {
+//            this.cache.add(item);
+//            log.info("Created object: " + item);
+//        } catch (Exception e) {
+//            log.info(e);
+//        }
+//    }
 //
 //TODO
 //    public T getByKey(K key) {
@@ -80,14 +103,14 @@ public abstract class DAO<T, K> {
 //        create(item);
 //        return item;
 //    }
-
-    public void delete(K key) {
-        try {
-            // Intellij's foreach with a closure
-            this.cache.removeIf(item -> item.hashCode() == key.hashCode());
-            log.info("Object removed.");
-        } catch(Exception e) {
-            log.info("Object not found.");
-        }
-    }
+//
+//    public void delete(K key) {
+//        try {
+//            // Intellij's foreach with a closure
+//            this.cache.removeIf(item -> item.hashCode() == key.hashCode());
+//            log.info("Object removed.");
+//        } catch(Exception e) {
+//            log.info("Object not found.");
+//        }
+//    }
 }
