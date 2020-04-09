@@ -3,18 +3,28 @@ package com.company.view;
 import com.company.dao.PersonDAO;
 import com.company.models.Person;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
 public class MainView {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         try {
+//            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver ());
             String url = "jdbc:oracle:thin:vladislav/oracle@localhost:1521:takeandfood";
             Connection connection = DriverManager.getConnection(url);
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM DUAL");
-            while(rs.next()) {
-                System.out.println(rs.getString(1));
-            }
+//            Statement statement = connection.prepareStatement("INSERT INTO PERSON VALUES(SQ_PERSON.nextval, 'BILL', 'GAITS', '112 Yellow Hill', 'LOLKEK');");
+//            statement.execute
+            Statement stmnt = connection.createStatement();
+            stmnt.executeUpdate("INSERT INTO PERSON(ID, NAME, LOGIN, PASSWORD, EMAIL) VALUES(SQ_PERSON.nextval, 'URAURA', 'GAITS', '112 Yellow Hill', 'LOLKEK');");
+//            connection.prepareStatement().executeUpdate();
+//            System.out.println(rs.getString("dummy"));
+//            ResultSet rs = connection.prepareStatement("SELECT * FROM PERSON").executeQuery();
+//            while(rs.next()) {
+//                System.out.println(rs.getString("NAME") + " " + rs.getString("EMAIL"));
+//            }
+            connection.commit();
+            connection.close();
+//            connection.close();
         } catch(Exception e) {
 
         }

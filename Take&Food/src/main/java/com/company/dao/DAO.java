@@ -9,17 +9,22 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 public abstract class DAO<T, K> {
     static Logger log = LogManager.getLogger();
+    public abstract boolean create(T item) throws SQLException;
+    public abstract Optional<T> get(K key) throws SQLException;
+    public abstract List<T> getAll() throws  SQLException;
+    public abstract boolean update(T updated) throws SQLException;
+    public abstract boolean delete(T item) throws SQLException;
+
 //    public abstract String path();
-    public abstract void create(T item) throws SQLException;
-    public abstract T get(K key);
-    public abstract void update(T item, String... values);
-    public abstract void delete(T item);
 //    private HashSet<T> cache;
 //    private ObjectInputStream inputStream;
 //    private ObjectOutputStream outputStream;
+
     protected Connection connection;
 
     public DAO()  {

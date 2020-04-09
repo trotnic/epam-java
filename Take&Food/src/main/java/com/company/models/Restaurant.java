@@ -3,12 +3,11 @@ package com.company.models;
 import java.util.*;
 
 public class Restaurant extends Model {
-    private String id;
+    private Long id;
     private String name;
     private HashSet<Person> administrators;
 
     public Restaurant() {
-        this.id = UUID.randomUUID().toString();
         this.administrators = new HashSet<>();
     }
 
@@ -18,7 +17,8 @@ public class Restaurant extends Model {
         this.administrators.add(admin);
     }
 
-    public String getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getId() { return id; }
     public HashSet<Person> getAdministrators() { return administrators; }
     public String getName() {
         return name;
@@ -28,6 +28,7 @@ public class Restaurant extends Model {
     }
     public void removeAdmin(Person admin) { administrators.remove(admin); }
     public void setName(String name) { this.name = name; }
+    public void setAdministrators(HashSet<Person> administrators) { this.administrators = administrators; }
 
     @Override
     public String toString() {
@@ -51,5 +52,33 @@ public class Restaurant extends Model {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getAdministrators());
+    }
+
+    public static class Builder {
+        private Restaurant entity;
+
+        public Builder() {
+            entity = new Restaurant();
+        }
+
+        public Builder withName(String name) {
+            entity.setName(name);
+            return this;
+        }
+
+        public Builder withId(Long id) {
+            entity.setId(id);
+            return this;
+        }
+
+        public Builder withAdministrators(HashSet<Person> administrators) {
+            entity.setAdministrators(administrators);
+            return this;
+        }
+
+        public Restaurant build() {
+            return entity;
+        }
+
     }
 }

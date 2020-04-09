@@ -4,6 +4,8 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Dish extends Model {
+    private Long id;
+    private Long announcementId;
     private String name;
     private String amount;
 
@@ -16,6 +18,8 @@ public class Dish extends Model {
         this.amount = amount;
     }
 
+    public Long getId() { return id; }
+    public Long getAnnouncementId() { return announcementId; }
     public String getName() {
         return name;
     }
@@ -28,6 +32,8 @@ public class Dish extends Model {
     public void setAmount(String amount) {
         this.amount = amount;
     }
+    public void setId(Long id) { this.id = id; }
+    public void setAnnouncementId(Long announcementId) { this.announcementId = announcementId; }
 
     @Override
     public String toString() {
@@ -47,7 +53,37 @@ public class Dish extends Model {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getAmount());
+    public int hashCode() { return Objects.hash(getName(), getAmount()); }
+
+    public static class Builder {
+        private Dish entity;
+
+        public Builder() {
+            entity = new Dish();
+        }
+
+        public Builder withName(String name) {
+            entity.setName(name);
+            return this;
+        }
+
+        public Builder withAmount(String amount) {
+            entity.setAmount(amount);
+            return this;
+        }
+
+        public Builder withId(Long id) {
+            entity.setId(id);
+            return this;
+        }
+
+        public Builder withAnnouncement(Long announcement) {
+            entity.setAnnouncementId(announcement);
+            return this;
+        }
+
+        public Dish build() {
+            return entity;
+        }
     }
 }
