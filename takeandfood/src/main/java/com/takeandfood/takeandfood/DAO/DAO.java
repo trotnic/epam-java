@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DAO<T, K> {
-    boolean create(T item) throws SQLException;
-    Optional<T> get(K key) throws SQLException;
-    List<T> getAll() throws SQLException;
-    boolean update(T updated) throws SQLException;
-    boolean delete(T item) throws SQLException;
+    boolean create(T item);
+    Optional<T> get(K key);
+    List<T> getAll();
+    boolean update(T updated);
+    boolean delete(K key);
 }

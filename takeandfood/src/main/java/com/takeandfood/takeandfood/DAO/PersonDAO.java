@@ -50,45 +50,66 @@ public class PersonDAO implements DAO<Person, String> {
 //    @Transactional
 //    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public boolean create(Person item) throws SQLException {
-        System.out.println("HERE");
-
-//        DefaultTransactionDefinition paramTransactionDefinition = new    DefaultTransactionDefinition();
-//
-//        TransactionStatus status=platformTransactionManager.getTransaction(paramTransactionDefinition );
-
-//        System.out.println(template.update("INSERT INTO PERSON (name, login, password, email, STATUS, ROLE) VALUES (\"Vladislav\", \"tr\", \"qwerty\", \"sobaka@gmail.com\", 1, 1);"));
-
-//        template.update("INSERT INTO PERSON (id, name, login, password, email, role, socialstatus) VALUES (SQ_PERSON.nextval, , ?, ?, ?, ?, ?)",
-//                , Map{})
-        template.update("INSERT INTO PERSON (name, login, password, email, role, status) VALUES (?, ?, ?, ?, ?, ?)",
+    public boolean create(Person item) {
+        boolean result = template.update("INSERT INTO PERSON (name, login, password, email, role, status) VALUES (?, ?, ?, ?, ?, ?)",
                 item.getName(),
                 item.getLogin(),
                 item.getPassword(),
                 item.getEmail(),
-                1,1);
-//        template.update("INSERT INTO PERSON (name, login, password, email, STATUS, ROLE) VALUES (\"Vladislav\", \"troa\", \"qwerty\", \"sobaka@gmail.com\", 1, 1);");
-//
-        return true;
+                item.getRole(),
+                item.getStatus()) > 0;
+        return result;
     }
 
     @Override
-    public Optional<Person> get(String key) throws SQLException {
-        return Optional.empty();
+    public Optional<Person> get(String key) {
+        return template.queryForObject(
+                "SELECT * FROM PERSON WHERE ID = ?",
+                new Object[]{key},
+                (rs, rowNumber) ->
+                        Optional.of(new Person.Builder()
+                                .withEmail(rs.getString("email"))
+                                .withId(rs.getLong("id"))
+                                .withLogin(rs.getString("login"))
+                                .withName(rs.getString("name"))
+                                .withPassword(rs.getString("password"))
+                                .withRole(rs.getInt("role"))
+                                .withStatus(rs.getInt("status"))
+                                .build()
+                        ));
     }
 
     @Override
-    public List<Person> getAll() throws SQLException {
-        return null;
+    public List<Person> getAll() {
+        return template.query(
+                SQL_GET_ALL,
+                (rs, rowNumber) ->
+                        new Person.Builder()
+                        .withEmail(rs.getString("email"))
+                        .withId(rs.getLong("id"))
+                        .withLogin(rs.getString("login"))
+                        .withName(rs.getString("name"))
+                        .withPassword(rs.getString("password"))
+                        .withRole(rs.getInt("role"))
+                        .withStatus(rs.getInt("status"))
+                        .build());
     }
 
     @Override
-    public boolean update(Person updated) throws SQLException {
-        return false;
+    public boolean update(Person updated) {
+        return template.update("UPDATE PERSON SET NAME = ?, LOGIN = ?, PASSWORD = ?, EMAIL = ?, STATUS = ?, ROLE = ? WHERE ID = ?",
+                updated.getName(),
+                updated.getLogin(),
+                updated.getPassword(),
+                updated.getEmail(),
+                updated.getStatus().ordinal(),
+                updated.getRole().ordinal(),
+                updated.getId()) > 0;
     }
 
     @Override
-    public boolean delete(Person item) throws SQLException {
-        return false;
+    public boolean delete(String key) {
+        boolean result = template.update("DELETE FROM PERSON WHERE ID = ?", key) > 0;
+        return result;
     }
 }

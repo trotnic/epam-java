@@ -22,7 +22,7 @@ public class TakeandfoodApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
 		System.out.println("WORKS");
-		runJDBC();
+//		runJDBC();
 	}
 
 	@Autowired
@@ -32,22 +32,22 @@ public class TakeandfoodApplication implements CommandLineRunner {
 	PersonDAO personDAO;
 
 	void runJDBC() {
-		List<Person> data = Collections.singletonList(
-				new Person.Builder()
-						.withEmail("email@email.com")
-						.withId((long) 12)
-						.withLogin("log9799n")
-						.withName("name")
-						.withPassword("password")
-						.withRole(1)
-						.withStatus(1)
-						.build()
-		);
+//		List<Person> data = Collections.singletonList(
+//				new Person.Builder()
+//						.withEmail("email@email.com")
+//						.withId((long) 12)
+//						.withLogin("log9799n")
+//						.withName("name")
+//						.withPassword("password")
+//						.withRole(1)
+//						.withStatus(1)
+//						.build()
+//		);
 		try {
-			for (Person pers : data
-			) {
-				personDAO.create(pers);
-			}
+//			for (Person pers : data
+//			) {
+//				personDAO.create(pers);
+//			}
 		} catch (Exception e) {
 
 		}
