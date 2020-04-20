@@ -3,28 +3,14 @@ package com.takeandfood.takeandfood.DAO;/*
  * @author vladislav on 4/19/20
  */
 
-import javax.sql.DataSource;
-
 import com.takeandfood.takeandfood.beans.Person;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 //public class PersonDAO implements DAO<Person, String> {
@@ -37,6 +23,7 @@ public class PersonDAO implements DAO<Person, String> {
     private final String SQL_INSERT_PERSON = "INSERT INTO PERSON (name, login, password, email, STATUS, ROLE) VALUES (?,?,?,?,?,?);";
     private final String SQL_FIND_PERSON = "SELECT * FROM PERSON WHERE ID = ?";
     private final String SQL_GET_ALL = "SELECT * FROM PERSON";
+    private final String SQL_UPDATE_PERSON = "UPDATE PERSON SET NAME = ?, LOGIN = ?, PASSWORD = ?, EMAIL = ?, STATUS = ?, ROLE = ? WHERE ID = ?";
 
 
     private Logger log = LogManager.getLogger();
@@ -44,14 +31,14 @@ public class PersonDAO implements DAO<Person, String> {
 //    private Connection connection;
 //
     @Autowired
-    private JdbcTemplate template;
+    private JdbcTemplate jdbcTemplate;
 
 //    @Override
 //    @Transactional
 //    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public boolean create(Person item) {
-        boolean result = template.update("INSERT INTO PERSON (name, login, password, email, role, status) VALUES (?, ?, ?, ?, ?, ?)",
+        boolean result = jdbcTemplate.update("INSERT INTO PERSON (name, login, password, email, role, status) VALUES (?, ?, ?, ?, ?, ?)",
                 item.getName(),
                 item.getLogin(),
                 item.getPassword(),
@@ -63,7 +50,7 @@ public class PersonDAO implements DAO<Person, String> {
 
     @Override
     public Optional<Person> get(String key) {
-        return template.queryForObject(
+        return jdbcTemplate.queryForObject(
                 "SELECT * FROM PERSON WHERE ID = ?",
                 new Object[]{key},
                 (rs, rowNumber) ->
@@ -81,7 +68,7 @@ public class PersonDAO implements DAO<Person, String> {
 
     @Override
     public List<Person> getAll() {
-        return template.query(
+        return jdbcTemplate.query(
                 SQL_GET_ALL,
                 (rs, rowNumber) ->
                         new Person.Builder()
@@ -92,12 +79,14 @@ public class PersonDAO implements DAO<Person, String> {
                         .withPassword(rs.getString("password"))
                         .withRole(rs.getInt("role"))
                         .withStatus(rs.getInt("status"))
-                        .build());
+                        .build()
+        );
     }
 
     @Override
     public boolean update(Person updated) {
-        return template.update("UPDATE PERSON SET NAME = ?, LOGIN = ?, PASSWORD = ?, EMAIL = ?, STATUS = ?, ROLE = ? WHERE ID = ?",
+        return jdbcTemplate.update(
+                SQL_UPDATE_PERSON,
                 updated.getName(),
                 updated.getLogin(),
                 updated.getPassword(),
@@ -109,7 +98,10 @@ public class PersonDAO implements DAO<Person, String> {
 
     @Override
     public boolean delete(String key) {
-        boolean result = template.update("DELETE FROM PERSON WHERE ID = ?", key) > 0;
+        boolean result = jdbcTemplate.update(
+                "DELETE FROM PERSON WHERE ID = ?",
+                key
+        ) > 0;
         return result;
     }
 }

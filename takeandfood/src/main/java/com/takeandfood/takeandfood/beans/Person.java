@@ -53,12 +53,12 @@ public class Person extends Model {
 //    }
     public SocialStatuses getStatus() { return status; }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(String id) { this.id = Long.parseLong(id); }
     public void setName(String name) { this.name = name; }
     public void setLogin(String login) { this.login = login; }
     public void setEmail(String email) { this.email = email; }
-    public void setRole(Roles role) { this.role = role; }
-    public void setStatus(SocialStatuses status) { this.status = status; }
+    public void setRole(String role) { this.role = Roles.values()[Integer.parseInt(role)]; }
+    public void setStatus(String status) { this.status = SocialStatuses.values()[Integer.parseInt(status)]; }
     public void setPassword(String password) { this.password = password; }
 //    public void addOrder(Announcement order) {
 //        orderList.add(order);
@@ -120,7 +120,7 @@ public class Person extends Model {
         }
 
         public Builder withId(Long id) {
-            entity.setId(id);
+            entity.setId(id.toString());
             return this;
         }
 
@@ -130,12 +130,12 @@ public class Person extends Model {
         }
 
         public Builder withRole(Number value) {
-            entity.setRole(Roles.values()[value.intValue()]);
+            entity.setRole(value.toString());
             return this;
         }
 
         public Builder withStatus(Number value) {
-            entity.setStatus(SocialStatuses.values()[value.intValue()]);
+            entity.setStatus(value.toString());
             return this;
         }
 

@@ -10,12 +10,11 @@ public class Dish extends Model {
     private Long id;
     private Long announcementId;
     private String name;
-    private String amount;
-
+    private Long amount;
 
     public Dish() {}
 
-    public Dish(String name, String amount) {
+    public Dish(String name, Long amount) {
         this();
         this.name = name;
         this.amount = amount;
@@ -26,13 +25,13 @@ public class Dish extends Model {
     public String getName() {
         return name;
     }
-    public String getAmount() {
+    public Long getAmount() {
         return amount;
     }
     public void setName(String name) {
         this.name = name;
     }
-    public void setAmount(String amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
     public void setId(Long id) { this.id = id; }
@@ -70,7 +69,7 @@ public class Dish extends Model {
             return this;
         }
 
-        public Builder withAmount(String amount) {
+        public Builder withAmount(Long amount) {
             entity.setAmount(amount);
             return this;
         }

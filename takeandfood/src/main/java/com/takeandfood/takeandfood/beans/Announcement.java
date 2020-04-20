@@ -3,52 +3,43 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
+import com.takeandfood.takeandfood.DAO.DishDAO;
+import com.takeandfood.takeandfood.DAO.RestaurantDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
+@Component
 public class Announcement extends Model {
+
+    @Autowired
+    private DishDAO dishDAO;
+
     private Long id;
-    private Long owner;
-    //    private Restaurant owner;
-    private HashSet<Dish> dishes;
-    private Date date;
-
-    public Announcement() {
-//        this.id = UUID.randomUUID().toString();
-        this.date = new Date();
-        this.dishes = new HashSet<>();
-    }
-
-//    public Announcement(Restaurant owner) {
-//        this();
-//        this.owner = owner;
-//    }
+    private Long ownerID;
+//    private HashSet<Dish> dishes;
+    private String date;
 
     public Long getId() { return id; };
-    public Long getOwner() { return owner; }
-    //    public Restaurant getOwner() {
-//        return owner;
-//    }
-    public HashSet<Dish> getPositions() {
-        return dishes;
-    }
+    public Optional<Restaurant> owner() { return (new RestaurantDAO()).get(this.id.toString()); }
     public String getDate() {
         return date.toString();
     }
-
-
+//    public HashSet<Dish> getDishes() { return dishes; }
+//    public void setDishes(HashSet<Dish> dishes) { this.dishes = dishes; }
+    public List<Dish> listDishes() { return dishDAO.allRelatedTo(id.toString()); }
+    public void setOwnerID(Long ownerID) { this.ownerID = ownerID; }
+    public Long getOwnerID() { return ownerID; }
     public void setId(Long id) { this.id = id; }
-    public void setOwner(Long ownerId) { this.owner = ownerId; }
-    //    public void setOwner(Restaurant owner) { this.owner = owner; }
-    public void addPosition(Dish dish) { dishes.add(dish); }
-    public void setPositions(HashSet<Dish> dishes) { this.dishes = dishes; }
-    public void setDate(Date date) { this.date = date; }
+    public void setDate(String date) { this.date = date; }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Announcement.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("owner=" + owner)
-                .add("positions=" + dishes)
+                .add("ownerID=" + ownerID)
+//                .add("positions=" + dishes)
                 .add("date=" + date)
                 .toString();
     }
@@ -59,14 +50,13 @@ public class Announcement extends Model {
         if (o == null || getClass() != o.getClass()) return false;
         Announcement that = (Announcement) o;
         return getId().equals(that.getId()) &&
-                getOwner().equals(that.getOwner()) &&
-                Objects.equals(dishes, that.dishes) &&
+                getOwnerID().equals(that.getOwnerID()) &&
                 getDate().equals(that.getDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getOwner(), dishes, getDate());
+        return Objects.hash(getId(), getOwnerID(), getDate());
     }
 
     public static class Builder {
@@ -76,12 +66,12 @@ public class Announcement extends Model {
             entity = new Announcement();
         }
 
-        public Builder withOwner(Long id) {
-            entity.setOwner(id);
+        public Builder withOwnerID(Long ownerID) {
+            entity.setOwnerID(ownerID);
             return this;
         }
 
-        public Builder withDate(Date date) {
+        public Builder withDate(String date) {
             entity.setDate(date);
             return this;
         }
