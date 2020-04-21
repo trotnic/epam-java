@@ -54,7 +54,8 @@ public class PersonDAO implements DAO<Person, String> {
                 "SELECT * FROM PERSON WHERE ID = ?",
                 new Object[]{key},
                 (rs, rowNumber) ->
-                        Optional.of(new Person.Builder()
+                        Optional.of(
+                                new Person.Builder()
                                 .withEmail(rs.getString("email"))
                                 .withId(rs.getLong("id"))
                                 .withLogin(rs.getString("login"))

@@ -24,7 +24,7 @@ public class DishDAO implements DAO<Dish, String> {
                 "INSERT INTO DISH (NAME, AMOUNT, ANNOUNCEMENT_ID) VALUE (?,?,?)",
                 item.getName(),
                 item.getAmount(),
-                item.getAnnouncementId()
+                item.getAnnouncementID()
         ) > 0;
     }
 
@@ -34,7 +34,8 @@ public class DishDAO implements DAO<Dish, String> {
                 "SELECT * FROM DISH WHERE ID = ?",
                 new Object[]{key},
                 (rs, rowNumber) ->
-                        Optional.of(new Dish.Builder()
+                        Optional.of(
+                                new Dish.Builder()
                                 .withAmount(rs.getLong("amount"))
                                 .withAnnouncement(rs.getLong("announcement_id"))
                                 .withName(rs.getString("name"))
@@ -64,7 +65,7 @@ public class DishDAO implements DAO<Dish, String> {
                 "UPDATE DISH SET NAME = ?, AMOUNT = ?, ANNOUNCEMENT_ID = ?",
                 updated.getName(),
                 updated.getAmount(),
-                updated.getAnnouncementId()
+                updated.getAnnouncementID()
         ) > 0;
     }
 

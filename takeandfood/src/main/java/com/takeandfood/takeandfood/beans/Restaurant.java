@@ -3,26 +3,24 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 import java.util.*;
 
-public class Restaurant extends Model {
+@Component
+public class Restaurant {
     private Long id;
     private String name;
-    private HashSet<Person> administrators;
+    private List<Person> administrators;
 
     public Restaurant() {
-        this.administrators = new HashSet<>();
-    }
-
-    public Restaurant(final String name, final Person admin) {
-        this();
-        this.name = name;
-        this.administrators.add(admin);
+        this.administrators = new ArrayList<>();
     }
 
     public void setId(Long id) { this.id = id; }
     public Long getId() { return id; }
-    public HashSet<Person> getAdministrators() { return administrators; }
+    public List<Person> getAdministrators() { return administrators; }
     public String getName() {
         return name;
     }
@@ -31,7 +29,7 @@ public class Restaurant extends Model {
     }
     public void removeAdmin(Person admin) { administrators.remove(admin); }
     public void setName(String name) { this.name = name; }
-    public void setAdministrators(HashSet<Person> administrators) { this.administrators = administrators; }
+    public void setAdministrators(List<Person> administrators) { this.administrators = administrators; }
 
     @Override
     public String toString() {
@@ -74,7 +72,7 @@ public class Restaurant extends Model {
             return this;
         }
 
-        public Builder withAdministrators(HashSet<Person> administrators) {
+        public Builder withAdministrators(List<Person> administrators) {
             entity.setAdministrators(administrators);
             return this;
         }

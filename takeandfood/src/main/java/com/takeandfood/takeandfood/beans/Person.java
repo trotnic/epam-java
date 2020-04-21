@@ -5,24 +5,24 @@ package com.takeandfood.takeandfood.beans;/*
 
 import com.takeandfood.takeandfood.collections.Roles;
 import com.takeandfood.takeandfood.collections.SocialStatuses;
+import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Person extends Model {
+@Component
+public class Person {
     private Long id;
     private String name;
     private String login;
     private String password;
     private String email;
     private Roles role;
-    //    private List<Announcement> orderList;
+    private Long restaurantID;
     private SocialStatuses status;
 
     public Person() {
-//        this.id = UUID.randomUUID().toString();
-//        this.orderList = new ArrayList<>();
-//        this.role = Roles.COMMON;
-//        this.status = SocialStatus.UNDEFINED;
+        restaurantID = 0L;
     }
 
     public Person(String name, String login, String email) {
@@ -48,9 +48,7 @@ public class Person extends Model {
     public Roles getRole() {
         return role;
     }
-    //    public List<Announcement> getOrders() {
-//        return orderList;
-//    }
+    public Long getRestaurantID() { return restaurantID; }
     public SocialStatuses getStatus() { return status; }
 
     public void setId(String id) { this.id = Long.parseLong(id); }
@@ -60,9 +58,7 @@ public class Person extends Model {
     public void setRole(String role) { this.role = Roles.values()[Integer.parseInt(role)]; }
     public void setStatus(String status) { this.status = SocialStatuses.values()[Integer.parseInt(status)]; }
     public void setPassword(String password) { this.password = password; }
-//    public void addOrder(Announcement order) {
-//        orderList.add(order);
-//    }
+    public void setRestaurantID(Long restaurantID) { this.restaurantID = restaurantID; }
 
     @Override
     public boolean equals(Object o) {
@@ -73,10 +69,10 @@ public class Person extends Model {
                 Objects.equals(getName(), person.getName()) &&
                 Objects.equals(getLogin(), person.getLogin()) &&
                 Objects.equals(getPassword(), person.getPassword()) &&
-                Objects.equals(getEmail(), person.getEmail());
-//                getRole() == user.getRole() &&
-//                Objects.equals(orderList, user.orderList) &&
-//                getStatus() == user.getStatus();
+                Objects.equals(getEmail(), person.getEmail()) &&
+                getRole() == person.getRole() &&
+                Objects.equals(getRestaurantID(), person.getRestaurantID()) &&
+                getStatus() == person.getStatus();
     }
 
     @Override
@@ -139,10 +135,13 @@ public class Person extends Model {
             return this;
         }
 
+        public Builder withRestaurantID(Long restaurantID) {
+            entity.setRestaurantID(restaurantID);
+            return this;
+        }
+
         public Person build() {
             return entity;
         }
-
-
     }
 }

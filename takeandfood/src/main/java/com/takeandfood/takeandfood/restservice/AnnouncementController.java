@@ -5,7 +5,6 @@ package com.takeandfood.takeandfood.restservice;/*
 
 import com.takeandfood.takeandfood.DAO.AnnouncementDAO;
 import com.takeandfood.takeandfood.beans.Announcement;
-import com.takeandfood.takeandfood.beans.Dish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +35,4 @@ public class AnnouncementController {
     @RequestMapping("/announcement/insert")
     public void insert(@ModelAttribute Announcement announcement) { announcementDAO.create(announcement); }
 
-    @RequestMapping("/announcement/dishes")
-    public List<Dish> dishes(@RequestParam("id") String id) { return announcementDAO.get(id).get().listDishes(); }
 }

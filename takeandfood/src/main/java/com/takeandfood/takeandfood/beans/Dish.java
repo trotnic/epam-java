@@ -3,10 +3,15 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class Dish extends Model {
+
+@Component
+public class Dish {
     private Long id;
     private Long announcementId;
     private String name;
@@ -20,8 +25,8 @@ public class Dish extends Model {
         this.amount = amount;
     }
 
-    public Long getId() { return id; }
-    public Long getAnnouncementId() { return announcementId; }
+    public Long getID() { return id; }
+    public Long getAnnouncementID() { return announcementId; }
     public String getName() {
         return name;
     }
@@ -34,13 +39,14 @@ public class Dish extends Model {
     public void setAmount(Long amount) {
         this.amount = amount;
     }
-    public void setId(Long id) { this.id = id; }
-    public void setAnnouncementId(Long announcementId) { this.announcementId = announcementId; }
+    public void setID(Long id) { this.id = id; }
+    public void setAnnouncementID(Long announcementId) { this.announcementId = announcementId; }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Dish.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
+                .add("announcementID'" + announcementId + "'")
                 .add("amount='" + amount + "'")
                 .toString();
     }
@@ -75,12 +81,12 @@ public class Dish extends Model {
         }
 
         public Builder withId(Long id) {
-            entity.setId(id);
+            entity.setID(id);
             return this;
         }
 
         public Builder withAnnouncement(Long announcement) {
-            entity.setAnnouncementId(announcement);
+            entity.setAnnouncementID(announcement);
             return this;
         }
 

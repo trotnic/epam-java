@@ -3,11 +3,14 @@ package com.takeandfood.takeandfood.DAO;/*
  * @author vladislav on 4/20/20
  */
 
+import com.takeandfood.takeandfood.beans.Dish;
+import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.beans.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.print.DocFlavor;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,27 +30,59 @@ public class RestaurantDAO implements DAO<Restaurant, String> {
 
     @Override
     public Optional<Restaurant> get(String key) {
-        return jdbcTemplate.queryForObject(
+        Restaurant restaurant = jdbcTemplate.queryForObject(
                 "SELECT * FROM RESTAURANT WHERE ID = ?",
                 new Object[]{key},
                 (rs, rowNumber) ->
-                        Optional.of(new Restaurant.Builder()
+                        new Restaurant.Builder()
                                 .withName(rs.getString("name"))
                                 .withId(rs.getLong("id"))
                                 .build()
-                        )
         );
+        List<Person> administrators = jdbcTemplate.query(
+                "SELECT * FROM PERSON WHERE RESTAURANT_ID = ?",
+                new Object[]{key},
+                (rs, rowNumber) ->
+                        new Person.Builder()
+                                .withEmail(rs.getString("email"))
+                                .withId(rs.getLong("id"))
+                                .withLogin(rs.getString("login"))
+                                .withName(rs.getString("name"))
+                                .withPassword(rs.getString("password"))
+                                .withRole(rs.getInt("role"))
+                                .withStatus(rs.getInt("status"))
+                                .build()
+        );
+        restaurant.setAdministrators(administrators);
+        return Optional.of(restaurant);
     }
 
     @Override
     public List<Restaurant> getAll() {
         return jdbcTemplate.query(
                 "SELECT * FROM RESTAURANT",
-                (rs, rowNumber) ->
-                        new Restaurant.Builder()
-                        .withName(rs.getString("name"))
-                        .withId(rs.getLong("id"))
-                        .build()
+                (rs, rowNumber) -> {
+                    Restaurant restaurant = new Restaurant.Builder()
+                            .withName(rs.getString("name"))
+                            .withId(rs.getLong("id"))
+                            .build();
+                    List<Person> administrators = jdbcTemplate.query(
+                            "SELECT * FROM PERSON WHERE RESTAURANT_ID = ?",
+                            new Object[]{restaurant.getId()},
+                            (rsi, rowNumberi) ->
+                                    new Person.Builder()
+                                            .withEmail(rsi.getString("email"))
+                                            .withId(rsi.getLong("id"))
+                                            .withLogin(rsi.getString("login"))
+                                            .withName(rsi.getString("name"))
+                                            .withPassword(rsi.getString("password"))
+                                            .withRole(rsi.getInt("role"))
+                                            .withStatus(rsi.getInt("status"))
+                                            .build()
+                    );
+                    restaurant.setAdministrators(administrators);
+                    return restaurant;
+                }
         );
     }
 
