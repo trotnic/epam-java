@@ -4,42 +4,67 @@ package com.takeandfood.takeandfood.restservice;/*
  */
 
 import com.takeandfood.takeandfood.DAO.FeedbackDAO;
+import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Feedback;
+import com.takeandfood.takeandfood.business.FeedbackHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.management.InvalidAttributeValueException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
 public class FeedbackController {
 
     @Autowired
-    private FeedbackDAO feedbackDAO;
+    private FeedbackHandler feedbackHandler;
 
-    @RequestMapping("/feedback/delete")
-    public void delete(@RequestParam("id") String id) {
-        feedbackDAO.delete(id);
+    @DeleteMapping("/feedback")
+    public ResponseEntity<Object> delete(@RequestParam("id") String id) {
+        try {
+            feedbackHandler.delete(id);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch(InvalidAttributeValueException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
-    @RequestMapping("/feedback/update")
-    public void update(@ModelAttribute Feedback feedback) {
-        feedbackDAO.update(feedback);
+    @PutMapping("/feedback")
+    public ResponseEntity<Object> update(@ModelAttribute Feedback feedback) {
+        try {
+            feedbackHandler.equals(feedback);
+            return ResponseEntity.ok().build();
+        } catch(NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @RequestMapping("/feedback")
-    public Optional<Feedback> get(@RequestParam("id") String id) {
-        return feedbackDAO.get(id);
+    @GetMapping("/feedback")
+    public ResponseEntity<Feedback> get(@RequestParam("id") String id) {
+        try {
+            Feedback feedback = feedbackHandler.get(id);
+            return ResponseEntity.ok(feedback);
+        } catch(NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @RequestMapping("/feedback/all")
-    public List<Feedback> all() { return feedbackDAO.getAll(); }
+    @GetMapping("/feedback/all")
+    public ResponseEntity<List<Feedback>> all() {
+        return ResponseEntity.ok(feedbackHandler.getAll());
+    }
 
-    @RequestMapping("/feedback/insert")
-    public void insert(@ModelAttribute Feedback feedback) {
-        feedbackDAO.create(feedback);
+    @PostMapping("/feedback")
+    public ResponseEntity<Object> insert(@ModelAttribute Feedback feedback) {
+        try {
+            feedbackHandler.create(feedback);
+            return ResponseEntity.ok().build();
+        } catch(InvalidAttributeValueException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
