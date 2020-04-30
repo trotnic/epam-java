@@ -44,4 +44,12 @@ public class FeedbackHandler {
 //        }
         feedbackDAO.create(feedback);
     }
+
+    public List<Feedback> getAllForRestaurant(String id) {
+        return feedbackDAO.getAllRelatedTo(id);
+    }
+
+//    public void update(Feedback )
+
+
 }

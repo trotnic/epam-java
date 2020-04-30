@@ -20,12 +20,14 @@ public class DishDAO implements DAO<Dish, String> {
 
     @Override
     public boolean create(Dish item) {
-        return jdbcTemplate.update(
-                "INSERT INTO DISH (NAME, AMOUNT, ANNOUNCEMENT_ID) VALUE (?,?,?)",
+        System.out.println(item);
+        jdbcTemplate.update(
+                "INSERT INTO DISH (NAME, AMOUNT, ANNOUNCEMENT_ID) VALUES (?,?,?)",
                 item.getName(),
                 item.getAmount(),
                 item.getAnnouncementID()
-        ) > 0;
+        );
+        return true;
     }
 
     @Override

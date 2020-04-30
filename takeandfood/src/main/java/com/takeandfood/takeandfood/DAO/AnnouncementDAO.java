@@ -7,6 +7,7 @@ import com.takeandfood.takeandfood.beans.Announcement;
 import com.takeandfood.takeandfood.beans.Dish;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,30 +15,35 @@ import java.util.Optional;
 
 @Repository
 public class AnnouncementDAO implements DAO<Announcement, String> {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public Optional<Announcement> getByOwnerDate(String ownerID, String date) {
+        Announcement announcement = jdbcTemplate.queryForObject(
+                "SELECT * FROM ANNOUNCEMENT WHERE RESTAURANT_ID = ? AND DATE = ?",
+                new Object[]{ownerID, date},
+                (rs, rowNumber) ->
+                        new Announcement.Builder()
+                                .withDate(rs.getString(2))
+                                .withID(rs.getLong(1))
+                                .withOwnerID(rs.getLong("restaurant_id"))
+                                .build()
+        );
+        return Optional.of(announcement);
+    }
+
     @Override
     public boolean create(Announcement item) {
-        boolean result = jdbcTemplate.update(
-                "INSERT INTO ANNOUNCEMENT (DATE) VALUES (?)",
-                item.getDate()
+        return jdbcTemplate.update(
+                "INSERT INTO ANNOUNCEMENT (DATE, RESTAURANT_ID) VALUES (?, ?)",
+                item.getDate(),
+                item.getOwnerID()
         ) > 0;
-        return false;
     }
 
     @Override
     public Optional<Announcement> get(String key) {
-
-//TODO think about this
-//        "SELECT A.ID AS A_ID, A.DATE, R.ID AS R_ID, R.NAME FROM ANNOUNCEMENT AS A\n" +
-//                "LEFT JOIN RESTAURANT AS R ON R.ID = A.RESTAURANT_ID\n" +
-//                "WHERE A.ID = ?",
-//        ResultSetExtractor<List<Dish>> resultSetExtractor =
-//                JdbcTemplateMapperFactory
-//                        .newInstance()
-//                        .newResultSetExtractor(Dish.class);
-
 
         List<Dish> dishes = jdbcTemplate.query(
                 "SELECT * FROM DISH WHERE ANNOUNCEMENT_ID = ?",
@@ -62,7 +68,7 @@ public class AnnouncementDAO implements DAO<Announcement, String> {
                             .build()
         );
 
-        announcement.setDishes(List.copyOf(dishes));
+        announcement.setDishes(dishes);
         return Optional.of(announcement);
     }
 
@@ -87,7 +93,7 @@ public class AnnouncementDAO implements DAO<Announcement, String> {
                                             .withName(rsi.getString("name"))
                                             .build()
                     );
-                    announcement.setDishes(dishes);
+                    announcement.setDishes(dishes       );
                     return announcement;
                 }
         );

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-//public class PersonDAO implements DAO<Person, String> {
-//}
 
 @Repository
 public class PersonDAO implements DAO<Person, String> {
@@ -28,12 +26,9 @@ public class PersonDAO implements DAO<Person, String> {
 
     private Logger log = LogManager.getLogger();
 
-//    private Connection connection;
-//
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-//    @Override
 //    @Transactional
 //    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -104,5 +99,33 @@ public class PersonDAO implements DAO<Person, String> {
                 key
         ) > 0;
         return result;
+    }
+
+    public List<Person> getAllRelatedTo(String restaurantID) {
+        return jdbcTemplate.query(
+                "SELECT * FROM PERSON WHERE RESTAURANT_ID = ?",
+                new Object[]{restaurantID},
+                (rs, rowNumber) ->
+                        new Person.Builder()
+                                .withEmail(rs.getString("email"))
+                                .withId(rs.getLong("id"))
+                                .withLogin(rs.getString("login"))
+                                .withName(rs.getString("name"))
+                                .withPassword(rs.getString("password"))
+                                .withRole(rs.getInt("role"))
+                                .withStatus(rs.getInt("status"))
+                                .build()
+        );
+    }
+
+    public boolean updateAdminStatus(String id, String restaurantID) {
+        String sql =
+                Integer.parseInt(restaurantID) == 0 ?
+                        "UPDATE PERSON SET ROLE = 1, RESTAURANT_ID = ? WHERE ID = ?" :
+                        "UPDATE PERSON SET ROLE = 0, RESTAURANT_ID = ? WHERE ID = ?";
+        return jdbcTemplate.update(
+                sql,
+                new Object[]{restaurantID, id}
+            ) > 0;
     }
 }

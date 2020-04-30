@@ -3,14 +3,12 @@ package com.takeandfood.takeandfood.DAO;/*
  * @author vladislav on 4/20/20
  */
 
-import com.takeandfood.takeandfood.beans.Dish;
 import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.beans.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.print.DocFlavor;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,5 +99,19 @@ public class RestaurantDAO implements DAO<Restaurant, String> {
                 "DELETE FROM RESTAURANT WHERE ID = ?",
                 key
         ) > 0;
+    }
+
+    public Optional<Restaurant> getbyName(String name) {
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM RESTAURANT WHERE NAME = ?",
+                new Object[]{name},
+                (rs, rowNumber) ->
+                        Optional.of(
+                                new Restaurant.Builder()
+                                        .withName(rs.getString("name"))
+                                        .withId(rs.getLong("id"))
+                                        .build()
+                        )
+        );
     }
 }

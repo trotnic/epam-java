@@ -33,15 +33,15 @@ public class FeedbackController {
         }
     }
 
-    @PutMapping("/feedback")
-    public ResponseEntity<Object> update(@ModelAttribute Feedback feedback) {
-        try {
-            feedbackHandler.equals(feedback);
-            return ResponseEntity.ok().build();
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @PutMapping("/feedback")
+//    public ResponseEntity<Object> update(@RequestBody Feedback feedback) {
+//        try {
+//            feedbackHandler.update(feedback);
+//            return ResponseEntity.ok().build();
+//        } catch(NoSuchElementException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @GetMapping("/feedback")
     public ResponseEntity<Feedback> get(@RequestParam("id") String id) {
@@ -53,13 +53,18 @@ public class FeedbackController {
         }
     }
 
+    @GetMapping("/feedback/restaurant")
+    public ResponseEntity<List<Feedback>> allRestaurant(@RequestParam("id") String id) {
+        return ResponseEntity.ok(feedbackHandler.getAllForRestaurant(id));
+    }
+
     @GetMapping("/feedback/all")
     public ResponseEntity<List<Feedback>> all() {
         return ResponseEntity.ok(feedbackHandler.getAll());
     }
 
     @PostMapping("/feedback")
-    public ResponseEntity<Object> insert(@ModelAttribute Feedback feedback) {
+    public ResponseEntity<Object> insert(@RequestBody Feedback feedback) {
         try {
             feedbackHandler.create(feedback);
             return ResponseEntity.ok().build();

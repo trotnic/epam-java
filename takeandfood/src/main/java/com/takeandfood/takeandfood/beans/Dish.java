@@ -16,14 +16,6 @@ public class Dish {
     private String name;
     private Long amount;
 
-    public Dish() {}
-
-    public Dish(String name, Long amount) {
-        this();
-        this.name = name;
-        this.amount = amount;
-    }
-
     public Long getID() { return id; }
     public Long getAnnouncementID() { return announcementId; }
     public String getName() {
@@ -45,7 +37,7 @@ public class Dish {
     public String toString() {
         return new StringJoiner(", ", Dish.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
-                .add("announcementID'" + announcementId + "'")
+                .add("announcementID='" + announcementId + "'")
                 .add("amount='" + amount + "'")
                 .toString();
     }

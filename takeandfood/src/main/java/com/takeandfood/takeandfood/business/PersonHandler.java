@@ -20,7 +20,6 @@ public class PersonHandler {
     @Autowired
     private PersonDAO personDAO;
 
-
     public void delete(String id) throws InvalidAttributeValueException {
         Pattern pattern = Pattern.compile("\\d+?");
         if(!pattern.matcher(id).matches() || !personDAO.get(id).isPresent()) {
@@ -37,12 +36,11 @@ public class PersonHandler {
         return personDAO.getAll();
     }
 
-    public void create(Person person) throws InvalidAttributeValueException{
-        Pattern pattern = Pattern.compile("\\s+");
-//        if(pattern.matcher(restaurantForm.getName()).matches() ||
-//                restaurantForm.getName().equals("")) {
-//            throw new InvalidAttributeValueException(restaurantForm.getName());
-//        }
-        personDAO.create(person);
+    public void create(Person person) throws InvalidAttributeValueException {
+        if(!personDAO.create(person)) return ;
+    }
+
+    public void update(Person person) throws InvalidAttributeValueException {
+
     }
 }

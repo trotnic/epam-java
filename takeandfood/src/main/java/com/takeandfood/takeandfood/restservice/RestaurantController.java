@@ -6,6 +6,7 @@ package com.takeandfood.takeandfood.restservice;/*
 import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Restaurant;
 import com.takeandfood.takeandfood.business.RestaurantHandler;
+import com.takeandfood.takeandfood.forms.RestaurantForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +58,9 @@ public class RestaurantController {
     }
 
     @PostMapping("/restaurant")
-    public ResponseEntity<Object> insert(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<Object> insert(@RequestBody RestaurantForm restaurantForm) {
         try {
-            restaurantHandler.create(restaurant);
+            restaurantHandler.create(restaurantForm);
             return ResponseEntity.ok().build();
         } catch(InvalidAttributeValueException e) {
             return ResponseEntity.badRequest().build();

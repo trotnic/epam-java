@@ -81,4 +81,19 @@ public class FeedbackDAO implements DAO<Feedback, String> {
                 key
         ) > 0;
     }
+
+    public List<Feedback> getAllRelatedTo(String id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM FEEDBACK WHERE RESTAURANT_ID = ?",
+                new Object[]{id},
+                (rs, rowNumber) ->
+                        new Feedback.Builder()
+                                .withDate(rs.getString("date"))
+                                .withRestaurantID(rs.getLong("restaurant_id"))
+                                .withText(rs.getString("text"))
+                                .withUserID(rs.getLong("user_id"))
+                                .withID(rs.getLong("id"))
+                                .build()
+        );
+    }
 }

@@ -3,9 +3,11 @@ package com.takeandfood.takeandfood.business;/*
  * @author vladislav on 4/22/20
  */
 
+import com.takeandfood.takeandfood.DAO.PersonDAO;
 import com.takeandfood.takeandfood.DAO.RestaurantDAO;
-import com.takeandfood.takeandfood.NoEntityException;
+import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.beans.Restaurant;
+import com.takeandfood.takeandfood.forms.RestaurantForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,9 @@ public class RestaurantHandler {
     @Autowired
     private RestaurantDAO restaurantDAO;
 
+    @Autowired
+    private PersonDAO personDAO;
+
     public void delete(String id) throws InvalidAttributeValueException {
         Pattern pattern = Pattern.compile("\\d+?");
         if(!pattern.matcher(id).matches() || !restaurantDAO.get(id).isPresent()) {
@@ -29,24 +34,35 @@ public class RestaurantHandler {
     }
 
     public Restaurant get(String id) throws NoSuchElementException {
-        return restaurantDAO.get(id).orElseThrow(() -> new NoSuchElementException(id));
+        Restaurant restaurant = restaurantDAO.get(id).orElseThrow(() -> new NoSuchElementException(id));
+        List<Person> administrators = personDAO.getAllRelatedTo(id);
+        restaurant.setAdministrators(administrators);
+        return restaurant;
     }
 
     public List<Restaurant> getAll() {
         return restaurantDAO.getAll();
     }
 
-    public void create(Restaurant restaurantForm) throws InvalidAttributeValueException{
+    public void create(RestaurantForm restaurantForm) throws InvalidAttributeValueException{
         Pattern pattern = Pattern.compile("\\s+");
         if(pattern.matcher(restaurantForm.getName()).matches() ||
                 restaurantForm.getName().equals("")) {
             throw new InvalidAttributeValueException(restaurantForm.getName());
         }
+
         restaurantDAO.create(
                 new Restaurant.Builder()
                         .withName(restaurantForm.getName())
                         .build()
         );
+
+        Long id = restaurantDAO.getbyName(restaurantForm.getName()).orElseThrow(InvalidAttributeValueException::new).getId();
+
+        for (Long admin: restaurantForm.getAdministrators()
+             ) {
+            personDAO.updateAdminStatus(admin.toString(), id.toString());
+        }
     }
 
     public void update(Restaurant restaurant) throws NoSuchElementException {
