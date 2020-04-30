@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
+//@Component
 public class Restaurant {
     private Long id;
     private String name;

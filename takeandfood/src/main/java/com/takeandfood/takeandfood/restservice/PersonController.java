@@ -3,8 +3,10 @@ package com.takeandfood.takeandfood.restservice;/*
  * @author vladislav on 4/19/20
  */
 
+import com.takeandfood.takeandfood.DAO.TestDAO;
 import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Person;
+import com.takeandfood.takeandfood.beans.Test;
 import com.takeandfood.takeandfood.business.PersonHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class PersonController {
 
     @Autowired
     private PersonHandler personHandler;
+
+    @Autowired
+    private TestDAO testDAO;
 
     @DeleteMapping("/person")
     public ResponseEntity<Object> delete(@RequestParam("id") String id) {
@@ -38,6 +43,12 @@ public class PersonController {
         } catch(InvalidAttributeValueException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @GetMapping("/persons")
+    public ResponseEntity<List<Test>> haha() {
+        List<Test> result = testDAO.getAll();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/person/all")

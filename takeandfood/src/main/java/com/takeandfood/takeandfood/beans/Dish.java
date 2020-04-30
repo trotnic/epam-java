@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 
-@Component
+//@Component
 public class Dish {
     private Long id;
     private Long announcementId;

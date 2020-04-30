@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.util.*;
 
-@Component
+//@Component
 public class Person {
     private Long id;
     private String name;
