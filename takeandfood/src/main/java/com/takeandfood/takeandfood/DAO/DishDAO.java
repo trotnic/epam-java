@@ -4,6 +4,8 @@ package com.takeandfood.takeandfood.DAO;/*
  */
 
 import com.takeandfood.takeandfood.beans.Dish;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,81 +17,53 @@ import java.util.Optional;
 public class DishDAO implements DAO<Dish, String> {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private SessionFactory sessionFactory;
 
 
     @Override
-    public boolean create(Dish item) {
-        System.out.println(item);
-        jdbcTemplate.update(
-                "INSERT INTO DISH (NAME, AMOUNT, ANNOUNCEMENT_ID) VALUES (?,?,?)",
-                item.getName(),
-                item.getAmount(),
-                item.getAnnouncementID()
-        );
-        return true;
+    public void create(Dish item) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(item);
     }
 
     @Override
     public Optional<Dish> get(String key) {
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM DISH WHERE ID = ?",
-                new Object[]{key},
-                (rs, rowNumber) ->
-                        Optional.of(
-                                new Dish.Builder()
-                                .withAmount(rs.getLong("amount"))
-                                .withAnnouncement(rs.getLong("announcement_id"))
-                                .withName(rs.getString("name"))
-                                .withId(rs.getLong("id"))
-                                .build()
-                        )
-        );
+        Session session = sessionFactory.getCurrentSession();
+        Dish dish = (Dish)session.load(Dish.class, Integer.valueOf(key));
+        return Optional.of(dish);
     }
 
     @Override
     public List<Dish> getAll() {
-        return jdbcTemplate.query(
-                "SELECT * FROM DISH",
-                (rs, rowNumber) ->
-                        new Dish.Builder()
-                        .withAmount(rs.getLong("amount"))
-                        .withAnnouncement(rs.getLong("announcement_id"))
-                        .withName(rs.getString("name"))
-                        .withId(rs.getLong("id"))
-                        .build()
-        );
+        Session session = sessionFactory.getCurrentSession();
+        List<Dish> dishList = session.createQuery("from Dish ").list();
+        return dishList;
     }
 
     @Override
-    public boolean update(Dish updated) {
-        return jdbcTemplate.update(
-                "UPDATE DISH SET NAME = ?, AMOUNT = ?, ANNOUNCEMENT_ID = ?",
-                updated.getName(),
-                updated.getAmount(),
-                updated.getAnnouncementID()
-        ) > 0;
+    public void update(Dish updated) {
+        Session session = sessionFactory.getCurrentSession();
+        session.update(updated);
     }
 
     @Override
-    public boolean delete(String key) {
-        return jdbcTemplate.update(
-                "DELETE FROM DISH WHERE ID = ?",
-                key
-        ) > 0;
+    public void delete(String key) {
+        Session session = sessionFactory.getCurrentSession();
+        Dish dish = (Dish)session.load(Dish.class, Integer.valueOf(key));
+        session.delete(dish);
     }
 
-    public List<Dish> allRelatedTo(String id) {
-        return jdbcTemplate.query(
-                "SELECT * FROM DISH WHERE ANNOUNCEMENT_ID = ?",
-                new Object[]{id},
-                (rs, rowNumber) ->
-                        new Dish.Builder()
-                                .withAmount(rs.getLong("amount"))
-                                .withAnnouncement(rs.getLong("announcement_id"))
-                                .withName(rs.getString("name"))
-                                .withId(rs.getLong("id"))
-                                .build()
-        );
-    }
+//    public List<Dish> allRelatedTo(String id) {
+//        return jdbcTemplate.query(
+//                "SELECT * FROM DISH WHERE ANNOUNCEMENT_ID = ?",
+//                new Object[]{id},
+//                (rs, rowNumber) ->
+//                        new Dish.Builder()
+//                                .withAmount(rs.getLong("amount"))
+//                                .withAnnouncement(rs.getLong("announcement_id"))
+//                                .withName(rs.getString("name"))
+//                                .withId(rs.getLong("id"))
+//                                .build()
+//        );
+//    }
 }

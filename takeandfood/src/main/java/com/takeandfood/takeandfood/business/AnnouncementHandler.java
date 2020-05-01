@@ -13,6 +13,8 @@ import com.takeandfood.takeandfood.beans.Feedback;
 import com.takeandfood.takeandfood.forms.AnnouncementForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.InvalidAttributeValueException;
 import java.util.Arrays;
@@ -21,15 +23,14 @@ import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 
-@Component
+@Service
 public class AnnouncementHandler {
 
     @Autowired
     private AnnouncementDAO announcementDAO;
 
-    @Autowired
-    private DishDAO dishDAO;
 
+    @Transactional
     public void delete(String id) throws InvalidAttributeValueException {
         Pattern pattern = Pattern.compile("\\d+?");
         if(!pattern.matcher(id).matches() || !announcementDAO.get(id).isPresent()) {
@@ -38,14 +39,17 @@ public class AnnouncementHandler {
         announcementDAO.delete(id);
     }
 
+    @Transactional
     public Announcement get(String id) throws NoSuchElementException {
         return announcementDAO.get(id).orElseThrow(() -> new NoSuchElementException(id));
     }
 
+    @Transactional
     public List<Announcement> getAll() {
         return announcementDAO.getAll();
     }
 
+    @Transactional
     public void create(AnnouncementForm announcement) throws InvalidAttributeValueException{
 
         Pattern pattern = Pattern.compile("\\s+");

@@ -3,61 +3,73 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/21/20
  */
 
-import org.springframework.stereotype.Component;
-
+import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-//@Component
+@Entity
+@Table(name = "FEEDBACK")
 public class Feedback {
+
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userID;
-    private String date;
+
+    @OneToOne
+    @Column(name = "USER_ID")
+    private Person person;
+
+    @Column(name = "DATE")
+    private Date date;
+
+    @Column(name = "TEXT")
     private String text;
-    private Long restaurantID;
+
+    @OneToOne
+    @Column(name = "RESTAURANT_ID")
+    private Restaurant restaurant;
 
     public Feedback() {}
 
     public Long getId() {
         return id;
     }
-    public Long getUserID() {
-        return userID;
+    public Person getPerson() {
+        return person;
     }
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
     public String getText() {
         return text;
     }
-    public Long getRestaurantID() {
-        return restaurantID;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
+    public void setPerson(Person user) {
+        this.person = user;
     }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
     public void setText(String text) {
         this.text = text;
     }
-    public void setRestaurantID(Long restaurantID) {
-        this.restaurantID = restaurantID;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Feedback.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("userID=" + userID)
+                .add("user=" + person)
                 .add("date='" + date + "'")
                 .add("text='" + text + "'")
-                .add("restaurantID='" + restaurantID + "'")
+                .add("restaurant='" + restaurant + "'")
                 .toString();
     }
 
@@ -67,51 +79,51 @@ public class Feedback {
         if (o == null || getClass() != o.getClass()) return false;
         Feedback feedback = (Feedback) o;
         return getId().equals(feedback.getId()) &&
-                getUserID().equals(feedback.getUserID()) &&
+                getPerson().equals(feedback.getPerson()) &&
                 getDate().equals(feedback.getDate()) &&
                 getText().equals(feedback.getText()) &&
-                getRestaurantID().equals(feedback.restaurantID);
+                getRestaurant().equals(feedback.restaurant);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUserID(), getDate(), getText(), getRestaurantID());
+        return Objects.hash(getId(), getPerson(), getDate(), getText(), getRestaurant());
     }
 
-    public static class Builder {
-        private Feedback entity;
-
-        public Builder() {
-            entity = new Feedback();
-        }
-
-        public Builder withText(String text) {
-            entity.setText(text);
-            return this;
-        }
-
-        public Builder withUserID(Long userID) {
-            entity.setUserID(userID);
-            return this;
-        }
-
-        public Builder withDate(String date) {
-            entity.setDate(date);
-            return this;
-        }
-
-        public Builder withRestaurantID(Long restaurantID) {
-            entity.setRestaurantID(restaurantID);
-            return this;
-        }
-
-        public Builder withID(Long id){
-            entity.setId(id);
-            return this;
-        }
-
-        public Feedback build() {
-            return entity;
-        }
-    }
+//    public static class Builder {
+//        private Feedback entity;
+//
+//        public Builder() {
+//            entity = new Feedback();
+//        }
+//
+//        public Builder withText(String text) {
+//            entity.setText(text);
+//            return this;
+//        }
+//
+//        public Builder withUserID(Long userID) {
+//            entity.setUserID(userID);
+//            return this;
+//        }
+//
+//        public Builder withDate(String date) {
+//            entity.setDate(date);
+//            return this;
+//        }
+//
+//        public Builder withRestaurantID(Long restaurantID) {
+//            entity.setRestaurantID(restaurantID);
+//            return this;
+//        }
+//
+//        public Builder withID(Long id){
+//            entity.setId(id);
+//            return this;
+//        }
+//
+//        public Feedback build() {
+//            return entity;
+//        }
+//    }
 }

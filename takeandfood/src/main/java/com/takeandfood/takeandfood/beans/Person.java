@@ -7,23 +7,43 @@ import com.takeandfood.takeandfood.collections.Roles;
 import com.takeandfood.takeandfood.collections.SocialStatuses;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
 //@Component
+@Entity
+@Table(name = "PERSON")
 public class Person {
-    private Long id;
-    private String name;
-    private String login;
-    private String password;
-    private String email;
-    private Roles role;
-    private Long restaurantID;
-    private SocialStatuses status;
 
-    public Person() {
-        restaurantID = 0L;
-    }
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "NAME")
+    private String name;
+
+    @Column(name = "LOGIN")
+    private String login;
+
+    @Column(name = "PASSWORD")
+    private String password;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "ROLE")
+    private Long role;
+
+    @ManyToOne
+    @Column(name = "RESTAURANT_ID")
+    private Restaurant restaurant;
+
+    @Column(name = "STATUS")
+    private Long status;
+
+    public Person() {}
 
     public Person(String name, String login, String email) {
         this();
@@ -46,19 +66,21 @@ public class Person {
     }
     public String getPassword() { return password; }
     public Roles getRole() {
-        return role;
+        return Roles.values()[Math.toIntExact(role)];
     }
-    public Long getRestaurantID() { return restaurantID; }
-    public SocialStatuses getStatus() { return status; }
+
+    public Restaurant getRestaurant() { return restaurant; }
+
+    public SocialStatuses getStatus() { return SocialStatuses.values()[Math.toIntExact(status)]; }
 
     public void setId(String id) { this.id = Long.parseLong(id); }
     public void setName(String name) { this.name = name; }
     public void setLogin(String login) { this.login = login; }
     public void setEmail(String email) { this.email = email; }
-    public void setRole(String role) { this.role = Roles.values()[Integer.parseInt(role)]; }
-    public void setStatus(String status) { this.status = SocialStatuses.values()[Integer.parseInt(status)]; }
+    public void setRole(Long role) { this.role = role; }
+    public void setStatus(Long status) { this.status = status; }
     public void setPassword(String password) { this.password = password; }
-    public void setRestaurantID(Long restaurantID) { this.restaurantID = restaurantID; }
+    public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
 
     @Override
     public boolean equals(Object o) {
@@ -71,7 +93,7 @@ public class Person {
                 Objects.equals(getPassword(), person.getPassword()) &&
                 Objects.equals(getEmail(), person.getEmail()) &&
                 getRole() == person.getRole() &&
-                Objects.equals(getRestaurantID(), person.getRestaurantID()) &&
+                Objects.equals(getRestaurant(), person.getRestaurant()) &&
                 getStatus() == person.getStatus();
     }
 
@@ -93,55 +115,55 @@ public class Person {
         return Objects.hash(getId(), getName(), getLogin(), getPassword(), getEmail());
     }
 
-    public static class Builder {
-        private Person entity;
-
-        public Builder() {
-            entity = new Person();
-        }
-
-        public Builder withName(String name) {
-            entity.setName(name);
-            return this;
-        }
-
-        public Builder withLogin(String login) {
-            entity.setLogin(login);
-            return this;
-        }
-
-        public Builder withPassword(String password) {
-            entity.setPassword(password);
-            return this;
-        }
-
-        public Builder withId(Long id) {
-            entity.setId(id.toString());
-            return this;
-        }
-
-        public Builder withEmail(String email) {
-            entity.setEmail(email);
-            return this;
-        }
-
-        public Builder withRole(Number value) {
-            entity.setRole(value.toString());
-            return this;
-        }
-
-        public Builder withStatus(Number value) {
-            entity.setStatus(value.toString());
-            return this;
-        }
-
-        public Builder withRestaurantID(Long restaurantID) {
-            entity.setRestaurantID(restaurantID);
-            return this;
-        }
-
-        public Person build() {
-            return entity;
-        }
-    }
+//    public static class Builder {
+//        private Person entity;
+//
+//        public Builder() {
+//            entity = new Person();
+//        }
+//
+//        public Builder withName(String name) {
+//            entity.setName(name);
+//            return this;
+//        }
+//
+//        public Builder withLogin(String login) {
+//            entity.setLogin(login);
+//            return this;
+//        }
+//
+//        public Builder withPassword(String password) {
+//            entity.setPassword(password);
+//            return this;
+//        }
+//
+//        public Builder withId(Long id) {
+//            entity.setId(id.toString());
+//            return this;
+//        }
+//
+//        public Builder withEmail(String email) {
+//            entity.setEmail(email);
+//            return this;
+//        }
+//
+//        public Builder withRole(Number value) {
+//            entity.setRole(value.toString());
+//            return this;
+//        }
+//
+//        public Builder withStatus(Number value) {
+//            entity.setStatus(value.toString());
+//            return this;
+//        }
+//
+//        public Builder withRestaurantID(Long restaurantID) {
+//            entity.setRestaurantID(restaurantID);
+//            return this;
+//        }
+//
+//        public Person build() {
+//            return entity;
+//        }
+//    }
 }

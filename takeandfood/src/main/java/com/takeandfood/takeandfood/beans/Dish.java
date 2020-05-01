@@ -5,19 +5,32 @@ package com.takeandfood.takeandfood.beans;/*
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 
-//@Component
+@Entity
+@Table(name = "DISH")
 public class Dish {
+
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long announcementId;
+
+    @ManyToOne
+    @Column(name = "ANNOUNCEMENT_ID")
+    private Announcement announcement;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "AMOUNT")
     private Long amount;
 
     public Long getID() { return id; }
-    public Long getAnnouncementID() { return announcementId; }
+    public Announcement getAnnouncement() { return announcement; }
     public String getName() {
         return name;
     }
@@ -31,13 +44,13 @@ public class Dish {
         this.amount = amount;
     }
     public void setID(Long id) { this.id = id; }
-    public void setAnnouncementID(Long announcementId) { this.announcementId = announcementId; }
+    public void setAnnouncement(Announcement announcement) { this.announcement = announcement; }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Dish.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
-                .add("announcementID='" + announcementId + "'")
+                .add("announcement='" + announcement + "'")
                 .add("amount='" + amount + "'")
                 .toString();
     }
@@ -54,35 +67,35 @@ public class Dish {
     @Override
     public int hashCode() { return Objects.hash(getName(), getAmount()); }
 
-    public static class Builder {
-        private Dish entity;
-
-        public Builder() {
-            entity = new Dish();
-        }
-
-        public Builder withName(String name) {
-            entity.setName(name);
-            return this;
-        }
-
-        public Builder withAmount(Long amount) {
-            entity.setAmount(amount);
-            return this;
-        }
-
-        public Builder withId(Long id) {
-            entity.setID(id);
-            return this;
-        }
-
-        public Builder withAnnouncement(Long announcement) {
-            entity.setAnnouncementID(announcement);
-            return this;
-        }
-
-        public Dish build() {
-            return entity;
-        }
-    }
+//    public static class Builder {
+//        private Dish entity;
+//
+//        public Builder() {
+//            entity = new Dish();
+//        }
+//
+//        public Builder withName(String name) {
+//            entity.setName(name);
+//            return this;
+//        }
+//
+//        public Builder withAmount(Long amount) {
+//            entity.setAmount(amount);
+//            return this;
+//        }
+//
+//        public Builder withId(Long id) {
+//            entity.setID(id);
+//            return this;
+//        }
+//
+//        public Builder withAnnouncement(Long announcement) {
+//            entity.setAnnouncementID(announcement);
+//            return this;
+//        }
+//
+//        public Dish build() {
+//            return entity;
+//        }
+//    }
 }

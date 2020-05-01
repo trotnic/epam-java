@@ -5,19 +5,30 @@ package com.takeandfood.takeandfood.beans;/*
 
 import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.util.*;
 
-//@Component
+@Entity
+@Table(name = "RESTAURANT")
 public class Restaurant {
+
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "NAME")
     private String name;
+
+    @OneToMany
+    @JoinColumn(name = "RESTAURANT_ID")
     private List<Person> administrators;
 
     public Restaurant() {
         this.administrators = new ArrayList<>();
     }
 
-    public void setId(Long id) { this.id = id; }
+//    public void setId(Long id) { this.id = id; }
     public Long getId() { return id; }
     public List<Person> getAdministrators() { return administrators; }
     public String getName() {
@@ -54,31 +65,31 @@ public class Restaurant {
         return Objects.hash(getId(), getName(), getAdministrators());
     }
 
-    public static class Builder {
-        private Restaurant entity;
-
-        public Builder() {
-            entity = new Restaurant();
-        }
-
-        public Builder withName(String name) {
-            entity.setName(name);
-            return this;
-        }
-
-        public Builder withId(Long id) {
-            entity.setId(id);
-            return this;
-        }
-
-        public Builder withAdministrators(List<Person> administrators) {
-            entity.setAdministrators(administrators);
-            return this;
-        }
-
-        public Restaurant build() {
-            return entity;
-        }
-
-    }
+//    public static class Builder {
+//        private Restaurant entity;
+//
+//        public Builder() {
+//            entity = new Restaurant();
+//        }
+//
+//        public Builder withName(String name) {
+//            entity.setName(name);
+//            return this;
+//        }
+//
+//        public Builder withId(Long id) {
+//            entity.setId(id);
+//            return this;
+//        }
+//
+//        public Builder withAdministrators(List<Person> administrators) {
+//            entity.setAdministrators(administrators);
+//            return this;
+//        }
+//
+//        public Restaurant build() {
+//            return entity;
+//        }
+//
+//    }
 }
