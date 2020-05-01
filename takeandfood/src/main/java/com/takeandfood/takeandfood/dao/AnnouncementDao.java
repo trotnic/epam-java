@@ -38,14 +38,13 @@ public class AnnouncementDao implements dao<Announcement, Long> {
     @Override
     public List<Announcement> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        List<Announcement> announcementList = session.createQuery("from Announcement").list();
-        return announcementList;
+        return (List<Announcement>) session.createQuery("from Announcement").list();
     }
 
     @Override
-    public void update(Announcement updated) {
+    public Announcement update(Announcement updated) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(updated);
+        return (Announcement) session.merge(updated);
     }
 
     @Override

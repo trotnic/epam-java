@@ -24,7 +24,6 @@ public class AnnouncementMapper extends AbstractMapper<Announcement, Announcemen
     private final ModelMapper modelMapper;
     private final RestaurantDao restaurantDAO;
 
-
     @Autowired
     AnnouncementMapper(ModelMapper modelMapper, RestaurantDao restaurantDAO) {
         super(Announcement.class, AnnouncementDto.class);
@@ -34,10 +33,10 @@ public class AnnouncementMapper extends AbstractMapper<Announcement, Announcemen
 
     @PostConstruct
     public void setupMapper() {
-        mapper.createTypeMap(Announcement.class, AnnouncementDto.class)
+        modelMapper.createTypeMap(Announcement.class, AnnouncementDto.class)
                 .addMappings(m -> m.skip(AnnouncementDto::setRestaurantId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(AnnouncementDto::setDate)).setPostConverter(toDtoConverter());
-        mapper.createTypeMap(AnnouncementDto.class,Announcement.class)
+        modelMapper.createTypeMap(AnnouncementDto.class,Announcement.class)
                 .addMappings(m -> m.skip(Announcement::setRestaurant)).setPostConverter(toEntityConverter());
     }
 

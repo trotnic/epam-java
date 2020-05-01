@@ -32,20 +32,20 @@ public class RestaurantDao implements dao<Restaurant, Long> {
     public Optional<Restaurant> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
         Restaurant restaurant = session.load(Restaurant.class, key);
+        System.out.println("restaurant: " + restaurant);
         return Optional.of(restaurant);
     }
 
     @Override
     public List<Restaurant> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        List<Restaurant> restaurantList = session.createQuery("from Restaurant").list();
-        return restaurantList;
+        return session.createQuery("from Restaurant").list();
     }
 
     @Override
-    public void update(Restaurant updated) {
+    public Restaurant update(Restaurant updated) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(updated);
+        return (Restaurant) session.merge(updated);
     }
 
     @Override

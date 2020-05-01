@@ -20,32 +20,30 @@ public class Restaurant {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "RESTAURANT_ID")
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<Person> administrators;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<Announcement> announcements;
 
-//    public Restaurant() {
-//        this.administrators = new ArrayList<>();
-//    }
 
-//    public void setId(Long id) { this.id = id; }
     public Long getId() { return id; }
     public List<Person> getAdministrators() { return administrators; }
     public String getName() {
         return name;
     }
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
     public void addAdmin(Person admin) {
         administrators.add(admin);
     }
     public void removeAdmin(Person admin) { administrators.remove(admin); }
+
+    public void setId(Long id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setAdministrators(List<Person> administrators) { this.administrators = administrators; }
-    public List<Announcement> getAnnouncements() {
-        return announcements;
-    }
     public void setAnnouncements(List<Announcement> announcements) {
         this.announcements = announcements;
     }
@@ -54,7 +52,7 @@ public class Restaurant {
     public String toString() {
         return new StringJoiner(", ", Restaurant.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("admin=" + administrators)
+                .add("administrators=" + administrators)
                 .add("name='" + name + "'")
                 .toString();
     }
@@ -64,41 +62,14 @@ public class Restaurant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Restaurant that = (Restaurant) o;
-        return getId().equals(that.getId()) &&
-                getName().equals(that.getName()) &&
-                Objects.equals(getAdministrators(), that.getAdministrators());
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getAdministrators(), that.getAdministrators()) &&
+                Objects.equals(getAnnouncements(), that.getAnnouncements());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getAdministrators());
+        return Objects.hash(getId(), getName(), getAdministrators(), getAnnouncements());
     }
-
-//    public static class Builder {
-//        private Restaurant entity;
-//
-//        public Builder() {
-//            entity = new Restaurant();
-//        }
-//
-//        public Builder withName(String name) {
-//            entity.setName(name);
-//            return this;
-//        }
-//
-//        public Builder withId(Long id) {
-//            entity.setId(id);
-//            return this;
-//        }
-//
-//        public Builder withAdministrators(List<Person> administrators) {
-//            entity.setAdministrators(administrators);
-//            return this;
-//        }
-//
-//        public Restaurant build() {
-//            return entity;
-//        }
-//
-//    }
 }

@@ -3,6 +3,8 @@ package com.takeandfood.takeandfood.dto;/*
  * @author vladislav on 5/1/20
  */
 
+import java.util.StringJoiner;
+
 public class PersonDto {
     private Long id;
     private String name;
@@ -75,5 +77,19 @@ public class PersonDto {
 
     public void setStatus(Long status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PersonDto.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("login='" + login + "'")
+                .add("password='" + password + "'")
+                .add("email='" + email + "'")
+                .add("role=" + role)
+                .add("restaurantId=" + restaurantId)
+                .add("status=" + status)
+                .toString();
     }
 }

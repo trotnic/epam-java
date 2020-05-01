@@ -38,14 +38,13 @@ public class FeedbackDao implements dao<Feedback, Long> {
     @Override
     public List<Feedback> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        List<Feedback> feedbackList = session.createQuery("from Feedback ").list();
-        return feedbackList;
+        return session.createQuery("from Feedback ").list();
     }
 
     @Override
-    public void update(Feedback updated) {
+    public Feedback update(Feedback updated) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(updated);
+        return (Feedback) session.merge(updated);
     }
 
     @Override

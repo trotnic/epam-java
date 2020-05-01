@@ -3,8 +3,8 @@ package com.takeandfood.takeandfood.service;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.dao.PersonDao;
 import com.takeandfood.takeandfood.beans.Person;
+import com.takeandfood.takeandfood.dao.PersonDao;
 import com.takeandfood.takeandfood.dto.PersonDto;
 import com.takeandfood.takeandfood.mapper.PersonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonHandler {
@@ -36,17 +37,19 @@ public class PersonHandler {
     }
 
     @Transactional
-    public List<Person> getAll() {
-        return personDao.getAll();
+    public List<PersonDto> getAll() {
+        return personDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional
-    public void create(PersonDto person) {
-        personDao.create(mapper.toEntity(person));
+    public PersonDto create(PersonDto person) {
+        Person pers = mapper.toEntity(person);
+        personDao.create(pers);
+        return mapper.toDto(pers);
     }
 
     @Transactional
-    public void update(PersonDto person) {
-        personDao.update(mapper.toEntity(person));
+    public PersonDto update(PersonDto person) {
+        return mapper.toDto(personDao.update(mapper.toEntity(person)));
     }
 }

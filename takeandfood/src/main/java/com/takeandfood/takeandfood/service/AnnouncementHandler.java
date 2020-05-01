@@ -3,8 +3,8 @@ package com.takeandfood.takeandfood.service;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.dao.AnnouncementDao;
 import com.takeandfood.takeandfood.beans.Announcement;
+import com.takeandfood.takeandfood.dao.AnnouncementDao;
 import com.takeandfood.takeandfood.dto.AnnouncementDto;
 import com.takeandfood.takeandfood.mapper.AnnouncementMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class AnnouncementHandler {
@@ -37,17 +37,18 @@ public class AnnouncementHandler {
     }
 
     @Transactional
-    public List<Announcement> getAll() {
-        return announcementDao.getAll();
+    public List<AnnouncementDto> getAll() {
+        return announcementDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional
-    public void create(AnnouncementDto announcement) {
+    public AnnouncementDto create(AnnouncementDto announcement) {
         announcementDao.create(mapper.toEntity(announcement));
+        return announcement;
     }
 
     @Transactional
-    public void update(AnnouncementDto announcement) throws NoSuchElementException {
-        announcementDao.update(mapper.toEntity(announcement));
+    public AnnouncementDto update(AnnouncementDto announcement) {
+        return mapper.toDto(announcementDao.update(mapper.toEntity(announcement)));
     }
 }

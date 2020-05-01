@@ -3,7 +3,6 @@ package com.takeandfood.takeandfood.restservice;/*
  * @author vladislav on 4/19/20
  */
 
-import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.dto.PersonDto;
 import com.takeandfood.takeandfood.service.PersonHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,12 @@ import java.util.List;
 @RestController
 public class PersonController {
 
-    @Autowired
     private PersonHandler personHandler;
+
+    @Autowired
+    public PersonController(PersonHandler personHandler) {
+        this.personHandler = personHandler;
+    }
 
     @DeleteMapping
     public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
@@ -27,25 +30,22 @@ public class PersonController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@RequestBody PersonDto person) {
-        personHandler.update(person);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PersonDto> update(@RequestBody PersonDto person) {
+        return ResponseEntity.ok(personHandler.update(person));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Person>> all() {
+    public ResponseEntity<List<PersonDto>> all() {
         return ResponseEntity.ok(personHandler.getAll());
     }
 
     @GetMapping
-    public ResponseEntity<Object> get(@RequestParam("id") Long id) {
-        PersonDto person = personHandler.get(id);
-        return ResponseEntity.ok(person);
+    public ResponseEntity<PersonDto> get(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(personHandler.get(id));
     }
 
     @PostMapping
-    public ResponseEntity<Object> insert(@RequestBody PersonDto person) {
-        personHandler.create(person);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PersonDto> insert(@RequestBody PersonDto person) {
+        return ResponseEntity.ok(personHandler.create(person));
     }
 }

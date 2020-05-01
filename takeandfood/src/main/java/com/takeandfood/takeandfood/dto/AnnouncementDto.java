@@ -3,13 +3,18 @@ package com.takeandfood.takeandfood.dto;/*
  * @author vladislav on 5/1/20
  */
 
+import com.takeandfood.takeandfood.beans.Dish;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class AnnouncementDto {
     private Long id;
     private Long restaurantId;
-    private List<DishDto> dishes;
+
     private String date;
+    private List<DishDto> dishes = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -41,5 +46,15 @@ public class AnnouncementDto {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", AnnouncementDto.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("restaurantId=" + restaurantId)
+                .add("dishes=" + dishes)
+                .add("date='" + date + "'")
+                .toString();
     }
 }

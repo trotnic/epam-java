@@ -38,14 +38,13 @@ public class DishDao implements dao<Dish, Long> {
     @Override
     public List<Dish> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        List<Dish> dishList = session.createQuery("from Dish ").list();
-        return dishList;
+        return (List<Dish>) session.createQuery("from Dish ").list();
     }
 
     @Override
-    public void update(Dish updated) {
+    public Dish update(Dish updated) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(updated);
+        return (Dish) session.merge(updated);
     }
 
     @Override

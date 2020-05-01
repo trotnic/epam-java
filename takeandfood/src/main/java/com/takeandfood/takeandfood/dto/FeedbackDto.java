@@ -3,19 +3,12 @@ package com.takeandfood.takeandfood.dto;/*
  * @author vladislav on 5/1/20
  */
 
-import java.text.SimpleDateFormat;
-
 public class FeedbackDto {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     private Long id;
     private Long personId;
     private Long restaurantId;
     private String text;
     private String date;
-
-    public static SimpleDateFormat getDateFormat() {
-        return dateFormat;
-    }
 
     public Long getId() {
         return id;

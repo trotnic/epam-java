@@ -18,8 +18,6 @@ import java.util.Optional;
 @Repository
 public class PersonDao implements dao<Person, Long> {
 
-//    private Logger log = LogManager.getLogger();
-
     private SessionFactory sessionFactory;
 
     @Autowired
@@ -43,14 +41,13 @@ public class PersonDao implements dao<Person, Long> {
     @Override
     public List<Person> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        List<Person> personList = session.createQuery("from Person ").list();
-        return personList;
+        return session.createQuery("from Person ").list();
     }
 
     @Override
-    public void update(Person updated) {
+    public Person update(Person updated) {
         Session session = sessionFactory.getCurrentSession();
-        session.update(updated);
+        return (Person) session.merge(updated);
     }
 
     @Override

@@ -14,7 +14,7 @@ public class Feedback {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToOne
@@ -89,41 +89,4 @@ public class Feedback {
     public int hashCode() {
         return Objects.hash(getId(), getPerson(), getDate(), getText(), getRestaurant());
     }
-
-//    public static class Builder {
-//        private Feedback entity;
-//
-//        public Builder() {
-//            entity = new Feedback();
-//        }
-//
-//        public Builder withText(String text) {
-//            entity.setText(text);
-//            return this;
-//        }
-//
-//        public Builder withUserID(Long userID) {
-//            entity.setUserID(userID);
-//            return this;
-//        }
-//
-//        public Builder withDate(String date) {
-//            entity.setDate(date);
-//            return this;
-//        }
-//
-//        public Builder withRestaurantID(Long restaurantID) {
-//            entity.setRestaurantID(restaurantID);
-//            return this;
-//        }
-//
-//        public Builder withID(Long id){
-//            entity.setId(id);
-//            return this;
-//        }
-//
-//        public Feedback build() {
-//            return entity;
-//        }
-//    }
 }

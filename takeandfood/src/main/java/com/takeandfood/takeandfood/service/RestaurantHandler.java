@@ -3,17 +3,16 @@ package com.takeandfood.takeandfood.service;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.dao.RestaurantDao;
 import com.takeandfood.takeandfood.beans.Restaurant;
+import com.takeandfood.takeandfood.dao.RestaurantDao;
 import com.takeandfood.takeandfood.dto.RestaurantDto;
 import com.takeandfood.takeandfood.mapper.RestaurantMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.InvalidAttributeValueException;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class RestaurantHandler {
@@ -38,17 +37,19 @@ public class RestaurantHandler {
     }
 
     @Transactional
-    public List<Restaurant> getAll() {
-        return restaurantDao.getAll();
+    public List<RestaurantDto> getAll() {
+        return restaurantDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional
-    public void create(RestaurantDto restaurant) {
-        restaurantDao.create(mapper.toEntity(restaurant));
+    public RestaurantDto create(RestaurantDto restaurant) {
+        Restaurant rest = mapper.toEntity(restaurant);
+        restaurantDao.create(rest);
+        return mapper.toDto(rest);
     }
 
     @Transactional
-    public void update(RestaurantDto restaurant) {
-        restaurantDao.update(mapper.toEntity(restaurant));
+    public RestaurantDto update(RestaurantDto restaurant) {
+        return mapper.toDto(restaurantDao.update(mapper.toEntity(restaurant)));
     }
 }

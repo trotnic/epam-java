@@ -5,13 +5,12 @@ package com.takeandfood.takeandfood.beans;/*
 
 import com.takeandfood.takeandfood.collections.Roles;
 import com.takeandfood.takeandfood.collections.SocialStatuses;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.swing.text.html.Option;
 import java.io.Serializable;
 import java.util.*;
 
-//@Component
 @Entity
 @Table(name = "PERSON")
 public class Person {
@@ -43,15 +42,6 @@ public class Person {
     @Column(name = "STATUS")
     private Long status;
 
-    public Person() {}
-
-    public Person(String name, String login, String email) {
-        this();
-        this.name = name;
-        this.login = login;
-        this.email = email;
-    }
-
     public Long getId() {
         return id;
     }
@@ -68,9 +58,7 @@ public class Person {
     public Roles getRole() {
         return Roles.values()[Math.toIntExact(role)];
     }
-
     public Restaurant getRestaurant() { return restaurant; }
-
     public SocialStatuses getStatus() { return SocialStatuses.values()[Math.toIntExact(status)]; }
 
     public void setId(String id) { this.id = Long.parseLong(id); }
@@ -107,6 +95,7 @@ public class Person {
                 .add("email='" + email + "'")
                 .add("role=" + role)
                 .add("status=" + status)
+                .add("restaurant=" + (Objects.isNull(restaurant) ? 0L : restaurant.getId()))
                 .toString();
     }
 
@@ -114,56 +103,4 @@ public class Person {
     public int hashCode() {
         return Objects.hash(getId(), getName(), getLogin(), getPassword(), getEmail());
     }
-
-//    public static class Builder {
-//        private Person entity;
-//
-//        public Builder() {
-//            entity = new Person();
-//        }
-//
-//        public Builder withName(String name) {
-//            entity.setName(name);
-//            return this;
-//        }
-//
-//        public Builder withLogin(String login) {
-//            entity.setLogin(login);
-//            return this;
-//        }
-//
-//        public Builder withPassword(String password) {
-//            entity.setPassword(password);
-//            return this;
-//        }
-//
-//        public Builder withId(Long id) {
-//            entity.setId(id.toString());
-//            return this;
-//        }
-//
-//        public Builder withEmail(String email) {
-//            entity.setEmail(email);
-//            return this;
-//        }
-//
-//        public Builder withRole(Number value) {
-//            entity.setRole(value.toString());
-//            return this;
-//        }
-//
-//        public Builder withStatus(Number value) {
-//            entity.setStatus(value.toString());
-//            return this;
-//        }
-//
-//        public Builder withRestaurantID(Long restaurantID) {
-//            entity.setRestaurantID(restaurantID);
-//            return this;
-//        }
-//
-//        public Person build() {
-//            return entity;
-//        }
-//    }
 }

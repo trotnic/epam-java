@@ -4,7 +4,6 @@ package com.takeandfood.takeandfood.configuration;/*
  */
 
 
-//import org.hibernate.dialect.MYSQl
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,8 +36,6 @@ public class HibernateConfig {
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/takeandfood?serverTimezone=UTC");
         dataSource.setUsername("root");
         dataSource.setPassword("root");
-
-
         return dataSource;
     }
 
@@ -55,7 +52,7 @@ public class HibernateConfig {
                 "hibernate.hbm2ddl.auto", "update");
         hibernateProperties.setProperty(
                 "hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-
+//        hibernateProperties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
         return hibernateProperties;
     }
 

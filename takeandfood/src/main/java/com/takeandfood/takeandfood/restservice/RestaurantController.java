@@ -31,25 +31,22 @@ public class RestaurantController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@RequestBody RestaurantDto restaurant) {
-        restaurantHandler.update(restaurant);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<RestaurantDto> update(@RequestBody RestaurantDto restaurant) {
+        return ResponseEntity.ok(restaurantHandler.update(restaurant));
     }
 
     @GetMapping
-    public ResponseEntity<Object> get(@RequestParam("id") Long id) {
-        RestaurantDto restaurant = restaurantHandler.get(id);
-        return ResponseEntity.ok(restaurant);
+    public ResponseEntity<RestaurantDto> get(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(restaurantHandler.get(id));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Restaurant>> all() {
+    public ResponseEntity<List<RestaurantDto>> all() {
         return ResponseEntity.ok(restaurantHandler.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<Object> insert(@RequestBody RestaurantDto restaurant) {
-        restaurantHandler.create(restaurant);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<RestaurantDto> insert(@RequestBody RestaurantDto restaurant) {
+        return ResponseEntity.ok(restaurantHandler.create(restaurant));
     }
 }

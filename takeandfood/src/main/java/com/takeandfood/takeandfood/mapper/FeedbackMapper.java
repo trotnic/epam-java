@@ -17,14 +17,14 @@ import java.util.Objects;
 @Component
 public class FeedbackMapper extends AbstractMapper<Feedback, FeedbackDto> {
 
-    private final ModelMapper mapper;
+    private final ModelMapper modelMapper;
     private final RestaurantDao restaurantDAO;
     private final PersonDao personDAO;
 
     @Autowired
-    FeedbackMapper(ModelMapper mapper, RestaurantDao restaurantDAO, PersonDao personDAO) {
+    FeedbackMapper(ModelMapper modelMapper, RestaurantDao restaurantDAO, PersonDao personDAO) {
         super(Feedback.class, FeedbackDto.class);
-        this.mapper = mapper;
+        this.modelMapper = modelMapper;
         this.restaurantDAO = restaurantDAO;
         this.personDAO = personDAO;
     }
@@ -32,10 +32,10 @@ public class FeedbackMapper extends AbstractMapper<Feedback, FeedbackDto> {
 
     @PostConstruct
     public void setupMapper() {
-        mapper.createTypeMap(Feedback.class, FeedbackDto.class)
+        modelMapper.createTypeMap(Feedback.class, FeedbackDto.class)
                 .addMappings(m -> m.skip(FeedbackDto::setRestaurantId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(FeedbackDto::setPersonId)).setPostConverter(toDtoConverter());
-        mapper.createTypeMap(FeedbackDto.class, Feedback.class)
+        modelMapper.createTypeMap(FeedbackDto.class, Feedback.class)
                 .addMappings(m -> m.skip(Feedback::setRestaurant)).setPostConverter(toEntityConverter())
                 .addMappings(m -> m.skip(Feedback::setPerson)).setPostConverter(toEntityConverter());
     }

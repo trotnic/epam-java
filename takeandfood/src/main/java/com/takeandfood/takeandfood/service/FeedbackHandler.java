@@ -3,8 +3,8 @@ package com.takeandfood.takeandfood.service;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.dao.FeedbackDao;
 import com.takeandfood.takeandfood.beans.Feedback;
+import com.takeandfood.takeandfood.dao.FeedbackDao;
 import com.takeandfood.takeandfood.dto.FeedbackDto;
 import com.takeandfood.takeandfood.mapper.FeedbackMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FeedbackHandler {
@@ -36,17 +37,19 @@ public class FeedbackHandler {
     }
 
     @Transactional
-    public List<Feedback> getAll() {
-        return feedbackDao.getAll();
+    public List<FeedbackDto> getAll() {
+        return feedbackDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional
-    public void create(FeedbackDto feedback) {
-        feedbackDao.create(mapper.toEntity(feedback));
+    public FeedbackDto create(FeedbackDto feedback) {
+        Feedback feed = mapper.toEntity(feedback);
+        feedbackDao.create(feed);
+        return mapper.toDto(feed);
     }
 
     @Transactional
-    public void update(FeedbackDto feedback) {
-        feedbackDao.update(mapper.toEntity(feedback));
+    public FeedbackDto update(FeedbackDto feedback) {
+        return mapper.toDto(feedbackDao.update(mapper.toEntity(feedback)));
     }
 }

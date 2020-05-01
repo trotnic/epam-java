@@ -3,26 +3,27 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.*;
 
-//@Component
 @Entity
 @Table(name = "ANNOUNCEMENT")
 public class Announcement {
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @Column(name = "RESTAURANT_ID")
     @JoinColumn(name = "RESTAURANT_ID")
     private Restaurant restaurant;
 
-    @OneToMany
-    private List<Dish> dishes;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ANNOUNCEMENT_ID")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Dish> dishes = new ArrayList<>();
 
     @Column(name = "DATE")
     private Date date;
@@ -32,11 +33,16 @@ public class Announcement {
         return date;
     }
     public List<Dish> getDishes() { return dishes; }
-    public void setDishes(List<Dish> dishes) { this.dishes = dishes; }
-    public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
     public Restaurant getRestaurant() { return restaurant; }
+
+//    public void setDishes(List<Dish> dishes) { this.dishes = dishes; }
+    public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
     public void setDate(Date date) { this.date = date; }
-    public void addDish(Dish dish) { dishes.add(dish); }
+
+    public void addDish(Dish dish) {
+        dishes.add(dish);
+        dish.setAnnouncement(this);
+    }
 
     @Override
     public String toString() {
@@ -63,31 +69,4 @@ public class Announcement {
     public int hashCode() {
         return Objects.hash(getId(), getRestaurant(), getDishes(), getDate());
     }
-
-//    public static class Builder {
-//        private Announcement entity;
-//
-//        public Builder() {
-//            entity = new Announcement();
-//        }
-//
-//        public Builder withOwnerID(Long ownerID) {
-//            entity.setOwnerID(ownerID);
-//            return this;
-//        }
-//
-//        public Builder withDate(String date) {
-//            entity.setDate(date);
-//            return this;
-//        }
-//
-//        public Builder withID(Long id) {
-//            entity.setID(id);
-//            return this;
-//        }
-//
-//        public Announcement build() {
-//            return entity;
-//        }
-//    }
 }

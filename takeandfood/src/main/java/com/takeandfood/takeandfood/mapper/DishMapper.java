@@ -17,21 +17,26 @@ import java.util.Objects;
 public class DishMapper extends AbstractMapper<Dish, DishDto> {
 
     private final ModelMapper modelMapper;
-    private final AnnouncementDao announcementDAO;
+    private final AnnouncementDao announcementDao;
 
     @Autowired
-    public DishMapper(ModelMapper modelMapper, AnnouncementDao announcementDAO) {
+    public DishMapper(ModelMapper modelMapper, AnnouncementDao announcementDao) {
         super(Dish.class, DishDto.class);
         this.modelMapper = modelMapper;
-        this.announcementDAO = announcementDAO;
+        this.announcementDao = announcementDao;
     }
 
     @PostConstruct
     public void setupMapper() {
-        mapper.createTypeMap(Dish.class, DishDto.class)
+        modelMapper.createTypeMap(Dish.class, DishDto.class)
                 .addMappings(m -> m.skip(DishDto::setAnnouncementId)).setPostConverter(toDtoConverter());
-        mapper.createTypeMap(DishDto.class, Dish.class)
-                .addMappings(m -> m.skip(Dish::setAnnouncement)).setPostConverter(toEntityConverter());
+
+/*
+    Have no ideas about why this thing doesn't work when i'm trying to persist parent with child in oneToMany relation at once
+    Maybe think about later
+*/
+//        modelMapper.createTypeMap(DishDto.class, Dish.class)
+//                .addMappings(m -> m.skip(Dish::setAnnouncement)).setPostConverter(toEntityConverter());
     }
 
     @Override
@@ -43,8 +48,8 @@ public class DishMapper extends AbstractMapper<Dish, DishDto> {
         return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getAnnouncement().getId();
     }
 
-    @Override
-    void dtoToEntitySpecificFields(DishDto dtoSource, Dish entityDestination) {
-        entityDestination.setAnnouncement(announcementDAO.get(dtoSource.getAnnouncementId()).orElse(null));
-    }
+//    @Override
+//    void dtoToEntitySpecificFields(DishDto dtoSource, Dish entityDestination) {
+//        entityDestination.setAnnouncement(announcementDao.get(dtoSource.getAnnouncementId()).orElse(null));
+//    }
 }

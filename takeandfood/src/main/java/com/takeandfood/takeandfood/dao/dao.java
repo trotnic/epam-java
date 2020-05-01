@@ -10,6 +10,6 @@ public interface dao<T, K> {
     void create(T item);
     Optional<T> get(K key);
     List<T> getAll();
-    void update(T updated);
+    T update(T updated);
     void delete(K key);
 }

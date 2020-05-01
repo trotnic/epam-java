@@ -15,12 +15,11 @@ import java.util.StringJoiner;
 public class Dish {
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ANNOUNCEMENT_ID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "ANNOUNCEMENT_ID",updatable=false,insertable=false)
     private Announcement announcement;
 
     @Column(name = "NAME")
@@ -37,6 +36,7 @@ public class Dish {
     public Long getAmount() {
         return amount;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -66,36 +66,4 @@ public class Dish {
 
     @Override
     public int hashCode() { return Objects.hash(getName(), getAmount()); }
-
-//    public static class Builder {
-//        private Dish entity;
-//
-//        public Builder() {
-//            entity = new Dish();
-//        }
-//
-//        public Builder withName(String name) {
-//            entity.setName(name);
-//            return this;
-//        }
-//
-//        public Builder withAmount(Long amount) {
-//            entity.setAmount(amount);
-//            return this;
-//        }
-//
-//        public Builder withId(Long id) {
-//            entity.setID(id);
-//            return this;
-//        }
-//
-//        public Builder withAnnouncement(Long announcement) {
-//            entity.setAnnouncementID(announcement);
-//            return this;
-//        }
-//
-//        public Dish build() {
-//            return entity;
-//        }
-//    }
 }
