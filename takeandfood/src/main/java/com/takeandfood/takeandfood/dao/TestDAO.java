@@ -1,4 +1,4 @@
-package com.takeandfood.takeandfood.DAO;/*
+package com.takeandfood.takeandfood.dao;/*
  * @project takeandfood
  * @author vladislav on 5/1/20
  */

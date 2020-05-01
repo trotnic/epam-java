@@ -3,8 +3,6 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -17,7 +15,11 @@ public class Announcement {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long ownerID;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @Column(name = "RESTAURANT_ID")
+    @JoinColumn(name = "RESTAURANT_ID")
+    private Restaurant restaurant;
 
     @OneToMany
     private List<Dish> dishes;
@@ -25,14 +27,14 @@ public class Announcement {
     @Column(name = "DATE")
     private Date date;
 
-    public Long getID() { return id; };
+    public Long getId() { return id; };
     public Date getDate() {
         return date;
     }
     public List<Dish> getDishes() { return dishes; }
     public void setDishes(List<Dish> dishes) { this.dishes = dishes; }
-    public void setOwnerID(Long ownerID) { this.ownerID = ownerID; }
-    public Long getOwnerID() { return ownerID; }
+    public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
+    public Restaurant getRestaurant() { return restaurant; }
     public void setDate(Date date) { this.date = date; }
     public void addDish(Dish dish) { dishes.add(dish); }
 
@@ -40,7 +42,7 @@ public class Announcement {
     public String toString() {
         return new StringJoiner(", ", Announcement.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("ownerId=" + ownerID)
+                .add("restaurant=" + restaurant)
                 .add("dishes=" + dishes)
                 .add("date=" + date)
                 .toString();
@@ -51,15 +53,15 @@ public class Announcement {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Announcement that = (Announcement) o;
-        return getID().equals(that.getID()) &&
+        return getId().equals(that.getId()) &&
                 getDishes().equals(that.getDishes()) &&
-                getOwnerID().equals(that.getOwnerID()) &&
+                getRestaurant().equals(that.getRestaurant()) &&
                 getDate().equals(that.getDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getID(), getOwnerID(), getDishes(), getDate());
+        return Objects.hash(getId(), getRestaurant(), getDishes(), getDate());
     }
 
 //    public static class Builder {

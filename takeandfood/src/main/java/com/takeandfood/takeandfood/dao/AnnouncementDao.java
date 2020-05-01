@@ -1,22 +1,19 @@
-package com.takeandfood.takeandfood.DAO;/*
+package com.takeandfood.takeandfood.dao;/*
  * @project takeandfood
  * @author vladislav on 4/19/20
  */
 
 import com.takeandfood.takeandfood.beans.Announcement;
-import com.takeandfood.takeandfood.beans.Dish;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AnnouncementDAO implements DAO<Announcement, String> {
+public class AnnouncementDao implements dao<Announcement, String> {
 
 //    @Autowired
 //    private JdbcTemplate jdbcTemplate;

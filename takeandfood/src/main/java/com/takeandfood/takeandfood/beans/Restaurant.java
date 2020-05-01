@@ -24,9 +24,12 @@ public class Restaurant {
     @JoinColumn(name = "RESTAURANT_ID")
     private List<Person> administrators;
 
-    public Restaurant() {
-        this.administrators = new ArrayList<>();
-    }
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Announcement> announcements;
+
+//    public Restaurant() {
+//        this.administrators = new ArrayList<>();
+//    }
 
 //    public void setId(Long id) { this.id = id; }
     public Long getId() { return id; }
@@ -40,6 +43,12 @@ public class Restaurant {
     public void removeAdmin(Person admin) { administrators.remove(admin); }
     public void setName(String name) { this.name = name; }
     public void setAdministrators(List<Person> administrators) { this.administrators = administrators; }
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
+    }
 
     @Override
     public String toString() {

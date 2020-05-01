@@ -3,7 +3,6 @@ package com.takeandfood.takeandfood.restservice;/*
  * @author vladislav on 4/20/20
  */
 
-import com.takeandfood.takeandfood.DAO.AnnouncementDAO;
 import com.takeandfood.takeandfood.beans.Announcement;
 import com.takeandfood.takeandfood.business.AnnouncementHandler;
 import com.takeandfood.takeandfood.forms.AnnouncementForm;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.management.InvalidAttributeValueException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 public class AnnouncementController {

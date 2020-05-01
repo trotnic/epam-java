@@ -1,4 +1,4 @@
-package com.takeandfood.takeandfood.DAO;/*
+package com.takeandfood.takeandfood.dao;/*
  * @project takeandfood
  * @author vladislav on 4/21/20
  */
@@ -7,14 +7,13 @@ import com.takeandfood.takeandfood.beans.Feedback;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class FeedbackDAO implements DAO<Feedback, String> {
+public class FeedbackDao implements dao<Feedback, String> {
 
 //    @Autowired
 //    private JdbcTemplate jdbcTemplate;

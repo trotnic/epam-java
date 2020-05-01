@@ -3,8 +3,7 @@ package com.takeandfood.takeandfood.business;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.DAO.FeedbackDAO;
-import com.takeandfood.takeandfood.NoEntityException;
+import com.takeandfood.takeandfood.dao.FeedbackDao;
 import com.takeandfood.takeandfood.beans.Feedback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,7 +17,7 @@ import java.util.regex.Pattern;
 public class FeedbackHandler {
 
     @Autowired
-    private FeedbackDAO feedbackDAO;
+    private FeedbackDao feedbackDAO;
 
     public void delete(String id) throws InvalidAttributeValueException {
         Pattern pattern = Pattern.compile("\\d+?");
@@ -45,9 +44,9 @@ public class FeedbackHandler {
         feedbackDAO.create(feedback);
     }
 
-    public List<Feedback> getAllForRestaurant(String id) {
-        return feedbackDAO.getAllRelatedTo(id);
-    }
+//    public List<Feedback> getAllForRestaurant(String id) {
+//        return feedbackDAO.getAllRelatedTo(id);
+//    }
 
 //    public void update(Feedback )
 

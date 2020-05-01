@@ -3,7 +3,6 @@ package com.takeandfood.takeandfood.restservice;/*
  * @author vladislav on 4/19/20
  */
 
-import com.takeandfood.takeandfood.DAO.TestDAO;
 import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.beans.Test;
@@ -22,8 +21,8 @@ public class PersonController {
     @Autowired
     private PersonHandler personHandler;
 
-    @Autowired
-    private TestDAO testDAO;
+//    @Autowired
+//    private TestDAO testDAO;
 
     @DeleteMapping("/person")
     public ResponseEntity<Object> delete(@RequestParam("id") String id) {
@@ -45,11 +44,11 @@ public class PersonController {
         }
     }
 
-    @GetMapping("/persons")
-    public ResponseEntity<List<Test>> haha() {
-        List<Test> result = testDAO.getAll();
-        return ResponseEntity.ok(result);
-    }
+//    @GetMapping("/persons")
+//    public ResponseEntity<List<Test>> haha() {
+//        List<Test> result = testDAO.getAll();
+//        return ResponseEntity.ok(result);
+//    }
 
     @GetMapping("/person/all")
     public ResponseEntity<List<Person>> all() {

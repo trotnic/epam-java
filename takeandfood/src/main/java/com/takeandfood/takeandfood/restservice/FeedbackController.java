@@ -3,8 +3,6 @@ package com.takeandfood.takeandfood.restservice;/*
  * @author vladislav on 4/21/20
  */
 
-import com.takeandfood.takeandfood.DAO.FeedbackDAO;
-import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Feedback;
 import com.takeandfood.takeandfood.business.FeedbackHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.management.InvalidAttributeValueException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 public class FeedbackController {

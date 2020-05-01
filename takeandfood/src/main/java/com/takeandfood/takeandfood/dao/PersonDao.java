@@ -1,4 +1,4 @@
-package com.takeandfood.takeandfood.DAO;/*
+package com.takeandfood.takeandfood.dao;/*
  * @project takeandfood
  * @author vladislav on 4/19/20
  */
@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,19 +16,17 @@ import java.util.Optional;
 
 
 @Repository
-public class PersonDAO implements DAO<Person, String> {
+public class PersonDao implements dao<Person, String> {
 
     private Logger log = LogManager.getLogger();
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
+//    @Autowired
+//    private JdbcTemplate jdbcTemplate;
+//
 
     @Autowired
     private SessionFactory sessionFactory;
 
-//    @Transactional
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void create(Person item) {
         Session session = sessionFactory.getCurrentSession();

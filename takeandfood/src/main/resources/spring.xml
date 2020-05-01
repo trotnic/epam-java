@@ -5,7 +5,7 @@
 
 <!--    <aop:config>-->
 <!--        <aop:aspect ref="logAspect">-->
-<!--            <aop:before method="beforeCall" pointcut="execution(* com.takeandfood.takeandfood.DAO.PersonDAO.*(..))"/>-->
+<!--            <aop:before method="beforeCall" pointcut="execution(* com.takeandfood.takeandfood.dao.PersonDAO.*(..))"/>-->
 <!--        </aop:aspect>-->
 <!--    </aop:config>-->
 

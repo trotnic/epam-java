@@ -1,21 +1,19 @@
-package com.takeandfood.takeandfood.DAO;/*
+package com.takeandfood.takeandfood.dao;/*
  * @project takeandfood
  * @author vladislav on 4/20/20
  */
 
-import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.beans.Restaurant;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RestaurantDAO implements DAO<Restaurant, String> {
+public class RestaurantDao implements dao<Restaurant, String> {
 
 
     @Autowired

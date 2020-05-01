@@ -3,8 +3,8 @@ package com.takeandfood.takeandfood.business;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.DAO.PersonDAO;
-import com.takeandfood.takeandfood.DAO.RestaurantDAO;
+import com.takeandfood.takeandfood.dao.PersonDao;
+import com.takeandfood.takeandfood.dao.RestaurantDao;
 import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.beans.Restaurant;
 import com.takeandfood.takeandfood.forms.RestaurantForm;
@@ -20,10 +20,10 @@ import java.util.regex.Pattern;
 public class RestaurantHandler {
 
     @Autowired
-    private RestaurantDAO restaurantDAO;
+    private RestaurantDao restaurantDAO;
 
     @Autowired
-    private PersonDAO personDAO;
+    private PersonDao personDAO;
 
     public void delete(String id) throws InvalidAttributeValueException {
         Pattern pattern = Pattern.compile("\\d+?");

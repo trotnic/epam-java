@@ -20,7 +20,7 @@ public class Dish {
     private Long id;
 
     @ManyToOne
-    @Column(name = "ANNOUNCEMENT_ID")
+    @JoinColumn(name = "ANNOUNCEMENT_ID")
     private Announcement announcement;
 
     @Column(name = "NAME")
@@ -29,7 +29,7 @@ public class Dish {
     @Column(name = "AMOUNT")
     private Long amount;
 
-    public Long getID() { return id; }
+    public Long getId() { return id; }
     public Announcement getAnnouncement() { return announcement; }
     public String getName() {
         return name;
@@ -43,7 +43,7 @@ public class Dish {
     public void setAmount(Long amount) {
         this.amount = amount;
     }
-    public void setID(Long id) { this.id = id; }
+    public void setId(Long id) { this.id = id; }
     public void setAnnouncement(Announcement announcement) { this.announcement = announcement; }
 
     @Override

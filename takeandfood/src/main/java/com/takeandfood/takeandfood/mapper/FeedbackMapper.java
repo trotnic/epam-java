@@ -3,8 +3,8 @@ package com.takeandfood.takeandfood.mapper;/*
  * @author vladislav on 5/1/20
  */
 
-import com.takeandfood.takeandfood.DAO.PersonDAO;
-import com.takeandfood.takeandfood.DAO.RestaurantDAO;
+import com.takeandfood.takeandfood.dao.PersonDao;
+import com.takeandfood.takeandfood.dao.RestaurantDao;
 import com.takeandfood.takeandfood.beans.Feedback;
 import com.takeandfood.takeandfood.dto.FeedbackDto;
 import org.modelmapper.ModelMapper;
@@ -18,11 +18,11 @@ import java.util.Objects;
 public class FeedbackMapper extends AbstractMapper<Feedback, FeedbackDto> {
 
     private final ModelMapper mapper;
-    private final RestaurantDAO restaurantDAO;
-    private final PersonDAO personDAO;
+    private final RestaurantDao restaurantDAO;
+    private final PersonDao personDAO;
 
     @Autowired
-    FeedbackMapper(ModelMapper mapper, RestaurantDAO restaurantDAO, PersonDAO personDAO) {
+    FeedbackMapper(ModelMapper mapper, RestaurantDao restaurantDAO, PersonDao personDAO) {
         super(Feedback.class, FeedbackDto.class);
         this.mapper = mapper;
         this.restaurantDAO = restaurantDAO;

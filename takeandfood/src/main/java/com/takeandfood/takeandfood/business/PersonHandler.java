@@ -3,7 +3,7 @@ package com.takeandfood.takeandfood.business;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.DAO.PersonDAO;
+import com.takeandfood.takeandfood.dao.PersonDao;
 import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class PersonHandler {
 
     @Autowired
-    private PersonDAO personDAO;
+    private PersonDao personDAO;
 
     public void delete(String id) throws InvalidAttributeValueException {
         Pattern pattern = Pattern.compile("\\d+?");

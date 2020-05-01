@@ -1,13 +1,12 @@
-package com.takeandfood.takeandfood.DAO;/*
+package com.takeandfood.takeandfood.dao;/*
  * @project takeandfood
  * @author vladislav on 4/19/20
  */
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public interface DAO<T, K> {
+public interface dao<T, K> {
     void create(T item);
     Optional<T> get(K key);
     List<T> getAll();

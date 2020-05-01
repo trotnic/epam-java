@@ -3,16 +3,11 @@ package com.takeandfood.takeandfood.business;/*
  * @author vladislav on 4/22/20
  */
 
-import com.takeandfood.takeandfood.DAO.AnnouncementDAO;
-import com.takeandfood.takeandfood.DAO.DishDAO;
-import com.takeandfood.takeandfood.DAO.FeedbackDAO;
-import com.takeandfood.takeandfood.NoEntityException;
+import com.takeandfood.takeandfood.dao.AnnouncementDao;
 import com.takeandfood.takeandfood.beans.Announcement;
 import com.takeandfood.takeandfood.beans.Dish;
-import com.takeandfood.takeandfood.beans.Feedback;
 import com.takeandfood.takeandfood.forms.AnnouncementForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +22,7 @@ import java.util.regex.Pattern;
 public class AnnouncementHandler {
 
     @Autowired
-    private AnnouncementDAO announcementDAO;
+    private AnnouncementDao announcementDAO;
 
 
     @Transactional
@@ -70,7 +65,7 @@ public class AnnouncementHandler {
         for (Dish dish: announcement.getDishes()
              ) {
             System.out.println(dish);
-            dish.setAnnouncementID(tmp.getID());
+            dish.setAnnouncementID(tmp.getId());
             System.out.println(dish);
             dishDAO.create(dish);
         }
