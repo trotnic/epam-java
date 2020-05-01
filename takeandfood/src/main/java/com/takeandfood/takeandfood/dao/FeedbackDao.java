@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class FeedbackDao implements dao<Feedback, String> {
+public class FeedbackDao implements dao<Feedback, Long> {
 
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
+    private SessionFactory sessionFactory;
 
     @Autowired
-    private SessionFactory sessionFactory;
+    public FeedbackDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void create(Feedback item) {
@@ -28,9 +29,9 @@ public class FeedbackDao implements dao<Feedback, String> {
     }
 
     @Override
-    public Optional<Feedback> get(String key) {
+    public Optional<Feedback> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Feedback feedback = (Feedback)session.load(Feedback.class, Integer.valueOf(key));
+        Feedback feedback = session.load(Feedback.class, key);
         return Optional.of(feedback);
     }
 
@@ -48,24 +49,9 @@ public class FeedbackDao implements dao<Feedback, String> {
     }
 
     @Override
-    public void delete(String key) {
+    public void delete(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Feedback feedback = (Feedback)session.load(Feedback.class, Integer.valueOf(key));
+        Feedback feedback = session.load(Feedback.class, key);
         session.delete(feedback);
     }
-
-//    public List<Feedback> getAllRelatedTo(String id) {
-//        return jdbcTemplate.query(
-//                "SELECT * FROM FEEDBACK WHERE RESTAURANT_ID = ?",
-//                new Object[]{id},
-//                (rs, rowNumber) ->
-//                        new Feedback.Builder()
-//                                .withDate(rs.getString("date"))
-//                                .withRestaurantID(rs.getLong("restaurant_id"))
-//                                .withText(rs.getString("text"))
-//                                .withUserID(rs.getLong("user_id"))
-//                                .withID(rs.getLong("id"))
-//                                .build()
-//        );
-//    }
 }

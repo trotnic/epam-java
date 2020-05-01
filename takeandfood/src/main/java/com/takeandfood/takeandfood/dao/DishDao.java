@@ -13,11 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DishDao implements dao<Dish, String> {
+public class DishDao implements dao<Dish, Long> {
 
-    @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
+    public DishDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void create(Dish item) {
@@ -26,9 +29,9 @@ public class DishDao implements dao<Dish, String> {
     }
 
     @Override
-    public Optional<Dish> get(String key) {
+    public Optional<Dish> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Dish dish = (Dish)session.load(Dish.class, Integer.valueOf(key));
+        Dish dish = session.load(Dish.class, key);
         return Optional.of(dish);
     }
 
@@ -46,23 +49,9 @@ public class DishDao implements dao<Dish, String> {
     }
 
     @Override
-    public void delete(String key) {
+    public void delete(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Dish dish = (Dish)session.load(Dish.class, Integer.valueOf(key));
+        Dish dish = session.load(Dish.class, key);
         session.delete(dish);
     }
-
-//    public List<Dish> allRelatedTo(String id) {
-//        return jdbcTemplate.query(
-//                "SELECT * FROM DISH WHERE ANNOUNCEMENT_ID = ?",
-//                new Object[]{id},
-//                (rs, rowNumber) ->
-//                        new Dish.Builder()
-//                                .withAmount(rs.getLong("amount"))
-//                                .withAnnouncement(rs.getLong("announcement_id"))
-//                                .withName(rs.getString("name"))
-//                                .withId(rs.getLong("id"))
-//                                .build()
-//        );
-//    }
 }

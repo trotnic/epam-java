@@ -3,76 +3,49 @@ package com.takeandfood.takeandfood.restservice;/*
  * @author vladislav on 4/19/20
  */
 
-import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Person;
-import com.takeandfood.takeandfood.beans.Test;
-import com.takeandfood.takeandfood.business.PersonHandler;
+import com.takeandfood.takeandfood.dto.PersonDto;
+import com.takeandfood.takeandfood.service.PersonHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.InvalidAttributeValueException;
 import java.util.List;
 
+@RequestMapping("/person")
 @RestController
 public class PersonController {
 
     @Autowired
     private PersonHandler personHandler;
 
-//    @Autowired
-//    private TestDAO testDAO;
-
-    @DeleteMapping("/person")
-    public ResponseEntity<Object> delete(@RequestParam("id") String id) {
-        try {
-            personHandler.delete(id);
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch(InvalidAttributeValueException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @DeleteMapping
+    public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
+        personHandler.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping("/person")
-    public ResponseEntity<Object> update(@RequestBody Person person) {
-        try {
-            personHandler.update(person);
-            return ResponseEntity.ok().build();
-        } catch(InvalidAttributeValueException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody PersonDto person) {
+        personHandler.update(person);
+        return ResponseEntity.ok().build();
     }
 
-//    @GetMapping("/persons")
-//    public ResponseEntity<List<Test>> haha() {
-//        List<Test> result = testDAO.getAll();
-//        return ResponseEntity.ok(result);
-//    }
-
-    @GetMapping("/person/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Person>> all() {
         return ResponseEntity.ok(personHandler.getAll());
     }
 
-    @GetMapping("/person")
-    public ResponseEntity<Object> get(@RequestParam("id") String id) {
-        try {
-            Person person = personHandler.get(id);
-            return ResponseEntity.ok(person);
-        } catch(NoEntityException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping
+    public ResponseEntity<Object> get(@RequestParam("id") Long id) {
+        PersonDto person = personHandler.get(id);
+        return ResponseEntity.ok(person);
     }
 
-    @PostMapping("/person")
-    public ResponseEntity<Object> insert(@RequestBody Person person) {
-        try {
-            personHandler.create(person);
-            return ResponseEntity.ok().build();
-        } catch(InvalidAttributeValueException e) {
-            return ResponseEntity.badRequest().build();
-        }
-
+    @PostMapping
+    public ResponseEntity<Object> insert(@RequestBody PersonDto person) {
+        personHandler.create(person);
+        return ResponseEntity.ok().build();
     }
 }

@@ -4,7 +4,8 @@ package com.takeandfood.takeandfood.restservice;/*
  */
 
 import com.takeandfood.takeandfood.beans.Feedback;
-import com.takeandfood.takeandfood.business.FeedbackHandler;
+import com.takeandfood.takeandfood.dto.FeedbackDto;
+import com.takeandfood.takeandfood.service.FeedbackHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,59 +15,43 @@ import javax.management.InvalidAttributeValueException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@RequestMapping("/feedback")
 @RestController
 public class FeedbackController {
 
-    @Autowired
     private FeedbackHandler feedbackHandler;
 
-    @DeleteMapping("/feedback")
-    public ResponseEntity<Object> delete(@RequestParam("id") String id) {
-        try {
-            feedbackHandler.delete(id);
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch(InvalidAttributeValueException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @Autowired
+    public FeedbackController(FeedbackHandler feedbackHandler) {
+        this.feedbackHandler = feedbackHandler;
     }
 
-//    @PutMapping("/feedback")
-//    public ResponseEntity<Object> update(@RequestBody Feedback feedback) {
-//        try {
-//            feedbackHandler.update(feedback);
-//            return ResponseEntity.ok().build();
-//        } catch(NoSuchElementException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
-    @GetMapping("/feedback")
-    public ResponseEntity<Feedback> get(@RequestParam("id") String id) {
-        try {
-            Feedback feedback = feedbackHandler.get(id);
-            return ResponseEntity.ok(feedback);
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping
+    public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
+        feedbackHandler.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/feedback/restaurant")
-    public ResponseEntity<List<Feedback>> allRestaurant(@RequestParam("id") String id) {
-        return ResponseEntity.ok(feedbackHandler.getAllForRestaurant(id));
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody FeedbackDto feedback) {
+        feedbackHandler.update(feedback);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/feedback/all")
+    @GetMapping
+    public ResponseEntity<Object> get(@RequestParam("id") Long id) {
+        FeedbackDto feedback = feedbackHandler.get(id);
+        return ResponseEntity.ok(feedback);
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<List<Feedback>> all() {
         return ResponseEntity.ok(feedbackHandler.getAll());
     }
 
-    @PostMapping("/feedback")
-    public ResponseEntity<Object> insert(@RequestBody Feedback feedback) {
-        try {
-            feedbackHandler.create(feedback);
-            return ResponseEntity.ok().build();
-        } catch(InvalidAttributeValueException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping
+    public ResponseEntity<Object> insert(@RequestBody FeedbackDto feedbackDto) {
+        feedbackHandler.create(feedbackDto);
+        return ResponseEntity.ok().build();
     }
 }

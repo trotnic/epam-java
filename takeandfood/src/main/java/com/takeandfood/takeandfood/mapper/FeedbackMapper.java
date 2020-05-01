@@ -35,7 +35,6 @@ public class FeedbackMapper extends AbstractMapper<Feedback, FeedbackDto> {
         mapper.createTypeMap(Feedback.class, FeedbackDto.class)
                 .addMappings(m -> m.skip(FeedbackDto::setRestaurantId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(FeedbackDto::setPersonId)).setPostConverter(toDtoConverter());
-
         mapper.createTypeMap(FeedbackDto.class, Feedback.class)
                 .addMappings(m -> m.skip(Feedback::setRestaurant)).setPostConverter(toEntityConverter())
                 .addMappings(m -> m.skip(Feedback::setPerson)).setPostConverter(toEntityConverter());
@@ -57,8 +56,8 @@ public class FeedbackMapper extends AbstractMapper<Feedback, FeedbackDto> {
 
     @Override
     void dtoToEntitySpecificFields(FeedbackDto dtoSource, Feedback entityDestination) {
-        entityDestination.setRestaurant(restaurantDAO.get(dtoSource.getRestaurantId().toString()).orElse(null));
-        entityDestination.setPerson(personDAO.get(dtoSource.getPersonId().toString()).orElse(null));
+        entityDestination.setRestaurant(restaurantDAO.get(dtoSource.getRestaurantId()).orElse(null));
+        entityDestination.setPerson(personDAO.get(dtoSource.getPersonId()).orElse(null));
     }
 }
 

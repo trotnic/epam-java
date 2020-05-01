@@ -13,11 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RestaurantDao implements dao<Restaurant, String> {
+public class RestaurantDao implements dao<Restaurant, Long> {
 
+    private SessionFactory sessionFactory;
 
     @Autowired
-    private SessionFactory sessionFactory;
+    public RestaurantDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void create(Restaurant item) {
@@ -26,9 +29,9 @@ public class RestaurantDao implements dao<Restaurant, String> {
     }
 
     @Override
-    public Optional<Restaurant> get(String key) {
+    public Optional<Restaurant> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Restaurant restaurant = (Restaurant)session.load(Restaurant.class, Integer.valueOf(key));
+        Restaurant restaurant = session.load(Restaurant.class, key);
         return Optional.of(restaurant);
     }
 
@@ -46,23 +49,9 @@ public class RestaurantDao implements dao<Restaurant, String> {
     }
 
     @Override
-    public void delete(String key) {
+    public void delete(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Restaurant restaurant = (Restaurant)session.load(Restaurant.class, Integer.valueOf(key));
+        Restaurant restaurant = session.load(Restaurant.class, key);
         session.delete(restaurant);
     }
-
-//    public Optional<Restaurant> getbyName(String name) {
-//        return jdbcTemplate.queryForObject(
-//                "SELECT * FROM RESTAURANT WHERE NAME = ?",
-//                new Object[]{name},
-//                (rs, rowNumber) ->
-//                        Optional.of(
-//                                new Restaurant.Builder()
-//                                        .withName(rs.getString("name"))
-//                                        .withId(rs.getLong("id"))
-//                                        .build()
-//                        )
-//        );
-//    }
 }

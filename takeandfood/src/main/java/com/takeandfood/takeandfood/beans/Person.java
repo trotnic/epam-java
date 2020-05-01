@@ -18,7 +18,7 @@ public class Person {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "NAME")
@@ -37,7 +37,7 @@ public class Person {
     private Long role;
 
     @ManyToOne
-    @Column(name = "RESTAURANT_ID")
+    @JoinColumn(name = "RESTAURANT_ID")
     private Restaurant restaurant;
 
     @Column(name = "STATUS")

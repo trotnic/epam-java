@@ -3,67 +3,53 @@ package com.takeandfood.takeandfood.restservice;/*
  * @author vladislav on 4/20/20
  */
 
-import com.takeandfood.takeandfood.NoEntityException;
 import com.takeandfood.takeandfood.beans.Restaurant;
-import com.takeandfood.takeandfood.business.RestaurantHandler;
-import com.takeandfood.takeandfood.forms.RestaurantForm;
+import com.takeandfood.takeandfood.dto.RestaurantDto;
+import com.takeandfood.takeandfood.service.RestaurantHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.InvalidAttributeValueException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+@RequestMapping("/restaurant")
 @RestController
 public class RestaurantController {
 
-    @Autowired
     private RestaurantHandler restaurantHandler;
 
-    @DeleteMapping("/restaurant")
-    public ResponseEntity<Object> delete(@RequestParam("id") String id) {
-        try {
-            restaurantHandler.delete(id);
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch (InvalidAttributeValueException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @Autowired
+    public RestaurantController(RestaurantHandler restaurantHandler) {
+        this.restaurantHandler = restaurantHandler;
     }
 
-    @PutMapping("/restaurant")
-    public ResponseEntity<Object> update(@RequestBody Restaurant restaurant) {
-        try {
-            restaurantHandler.update(restaurant);
-            return ResponseEntity.ok().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping
+    public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
+        restaurantHandler.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/restaurant")
-    public ResponseEntity<Object> get(@RequestParam("id") String id) {
-        try {
-            Restaurant restaurant = restaurantHandler.get(id);
-            return ResponseEntity.ok(restaurant);
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody RestaurantDto restaurant) {
+        restaurantHandler.update(restaurant);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/restaurant/all")
+    @GetMapping
+    public ResponseEntity<Object> get(@RequestParam("id") Long id) {
+        RestaurantDto restaurant = restaurantHandler.get(id);
+        return ResponseEntity.ok(restaurant);
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<List<Restaurant>> all() {
         return ResponseEntity.ok(restaurantHandler.getAll());
     }
 
-    @PostMapping("/restaurant")
-    public ResponseEntity<Object> insert(@RequestBody RestaurantForm restaurantForm) {
-        try {
-            restaurantHandler.create(restaurantForm);
-            return ResponseEntity.ok().build();
-        } catch(InvalidAttributeValueException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping
+    public ResponseEntity<Object> insert(@RequestBody RestaurantDto restaurant) {
+        restaurantHandler.create(restaurant);
+        return ResponseEntity.ok().build();
     }
 }

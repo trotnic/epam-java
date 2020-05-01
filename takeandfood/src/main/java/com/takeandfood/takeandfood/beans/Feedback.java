@@ -18,7 +18,7 @@ public class Feedback {
     private Long id;
 
     @OneToOne
-    @Column(name = "USER_ID")
+    @JoinColumn(name = "USER_ID")
     private Person person;
 
     @Column(name = "DATE")
@@ -28,7 +28,7 @@ public class Feedback {
     private String text;
 
     @OneToOne
-    @Column(name = "RESTAURANT_ID")
+    @JoinColumn(name = "RESTAURANT_ID")
     private Restaurant restaurant;
 
     public Feedback() {}

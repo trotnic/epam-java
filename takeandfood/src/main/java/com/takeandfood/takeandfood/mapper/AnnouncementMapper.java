@@ -8,6 +8,7 @@ import com.takeandfood.takeandfood.beans.Announcement;
 import com.takeandfood.takeandfood.dto.AnnouncementDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.ParseException;
@@ -16,6 +17,8 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.TimeZone;
 
+
+@Component
 public class AnnouncementMapper extends AbstractMapper<Announcement, AnnouncementDto> {
 
     private final ModelMapper modelMapper;
@@ -32,8 +35,7 @@ public class AnnouncementMapper extends AbstractMapper<Announcement, Announcemen
     @PostConstruct
     public void setupMapper() {
         mapper.createTypeMap(Announcement.class, AnnouncementDto.class)
-                .addMappings(m -> m.skip(AnnouncementDto::setRestaurantId)).setPostConverter(toDtoConverter());
-        mapper.createTypeMap(Announcement.class, AnnouncementDto.class)
+                .addMappings(m -> m.skip(AnnouncementDto::setRestaurantId)).setPostConverter(toDtoConverter())
                 .addMappings(m -> m.skip(AnnouncementDto::setDate)).setPostConverter(toDtoConverter());
         mapper.createTypeMap(AnnouncementDto.class,Announcement.class)
                 .addMappings(m -> m.skip(Announcement::setRestaurant)).setPostConverter(toEntityConverter());
@@ -58,7 +60,7 @@ public class AnnouncementMapper extends AbstractMapper<Announcement, Announcemen
 
     @Override
     void dtoToEntitySpecificFields(AnnouncementDto dtoSource, Announcement entityDestination) {
-        entityDestination.setRestaurant(restaurantDAO.get(dtoSource.getRestaurantId().toString()).orElse(null));
+        entityDestination.setRestaurant(restaurantDAO.get(dtoSource.getRestaurantId()).orElse(null));
         entityDestination.setDate(getDate(dtoSource));
     }
 

@@ -13,27 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AnnouncementDao implements dao<Announcement, String> {
+public class AnnouncementDao implements dao<Announcement, Long> {
 
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private SessionFactory sessionFactory;
 
-//    public Optional<Announcement> getByOwnerDate(String ownerID, String date) {
-//        Announcement announcement = jdbcTemplate.queryForObject(
-//                "SELECT * FROM ANNOUNCEMENT WHERE RESTAURANT_ID = ? AND DATE = ?",
-//                new Object[]{ownerID, date},
-//                (rs, rowNumber) ->
-//                        new Announcement.Builder()
-//                                .withDate(rs.getString(2))
-//                                .withID(rs.getLong(1))
-//                                .withOwnerID(rs.getLong("restaurant_id"))
-//                                .build()
-//        );
-//        return Optional.of(announcement);
-//    }
+    @Autowired
+    public AnnouncementDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void create(Announcement item) {
@@ -42,9 +29,9 @@ public class AnnouncementDao implements dao<Announcement, String> {
     }
 
     @Override
-    public Optional<Announcement> get(String key) {
+    public Optional<Announcement> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Announcement announcement = (Announcement)session.load(Announcement.class, Integer.valueOf(key));
+        Announcement announcement = session.load(Announcement.class, key);
         return Optional.of(announcement);
     }
 
@@ -62,9 +49,9 @@ public class AnnouncementDao implements dao<Announcement, String> {
     }
 
     @Override
-    public void delete(String key) {
+    public void delete(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Announcement announcement = (Announcement)session.load(Announcement.class, Integer.valueOf(key));
+        Announcement announcement = session.load(Announcement.class, key);
         session.delete(announcement);
     }
 }

@@ -4,67 +4,53 @@ package com.takeandfood.takeandfood.restservice;/*
  */
 
 import com.takeandfood.takeandfood.beans.Announcement;
-import com.takeandfood.takeandfood.business.AnnouncementHandler;
-import com.takeandfood.takeandfood.forms.AnnouncementForm;
+import com.takeandfood.takeandfood.dto.AnnouncementDto;
+import com.takeandfood.takeandfood.service.AnnouncementHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.InvalidAttributeValueException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+@RequestMapping("/announcement")
 @RestController
 public class AnnouncementController {
 
-    @Autowired
     private AnnouncementHandler announcementHandler;
 
-    @DeleteMapping("/announcement")
-    public ResponseEntity<Object> delete(@RequestParam("id") String id) {
-        try {
-            announcementHandler.delete(id);
-            return ResponseEntity.ok(HttpStatus.OK);
-        } catch (InvalidAttributeValueException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @Autowired
+    public AnnouncementController(AnnouncementHandler announcementHandler) {
+        this.announcementHandler = announcementHandler;
     }
 
-    @PutMapping("/announcement")
-    public ResponseEntity<Object> update(@RequestBody Announcement announcement) {
-        try {
-            announcementHandler.update(announcement);
-            return ResponseEntity.ok().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    @DeleteMapping
+    public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
+        announcementHandler.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping("/announcement/all")
+    @PutMapping
+    public ResponseEntity<Object> update(@RequestBody AnnouncementDto announcement) {
+        announcementHandler.update(announcement);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<List<Announcement>> all() {
         return ResponseEntity.ok(announcementHandler.getAll());
     }
 
-    @GetMapping("/announcement")
-    public ResponseEntity<Object> get(@RequestParam("id") String id) {
-        try {
-            Announcement announcement = announcementHandler.get(id);
-            return ResponseEntity.ok(announcement);
-        } catch(NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping
+    public ResponseEntity<Object> get(@RequestParam("id") Long id) {
+        AnnouncementDto announcement = announcementHandler.get(id);
+        return ResponseEntity.ok(announcement);
     }
 
-    @PostMapping(value = "/announcement", consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<Object> insert(@RequestBody AnnouncementForm announcement) {
-        try {
-            announcementHandler.create(announcement);
-            return ResponseEntity.ok().build();
-        } catch(InvalidAttributeValueException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping
+    public ResponseEntity<Object> insert(@RequestBody AnnouncementDto announcement) {
+        announcementHandler.create(announcement);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -8,10 +8,12 @@ import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.dto.PersonDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 
+@Component
 public class PersonMapper extends AbstractMapper<Person, PersonDto> {
 
     private final ModelMapper modelMapper;
@@ -43,6 +45,6 @@ public class PersonMapper extends AbstractMapper<Person, PersonDto> {
 
     @Override
     void dtoToEntitySpecificFields(PersonDto dtoSource, Person entityDestination) {
-        entityDestination.setRestaurant(restaurantDAO.get(dtoSource.getRestaurantId().toString()).orElse(null));
+        entityDestination.setRestaurant(restaurantDAO.get(dtoSource.getRestaurantId()).orElse(null));
     }
 }
