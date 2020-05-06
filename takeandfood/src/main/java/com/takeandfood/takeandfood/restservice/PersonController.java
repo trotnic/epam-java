@@ -35,8 +35,8 @@ public class PersonController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PersonDto>> all() {
-        return ResponseEntity.ok(personHandler.getAll());
+    public ResponseEntity<List<PersonDto>> all(@RequestParam("page") Integer page) {
+        return ResponseEntity.ok(personHandler.getAll(page));
     }
 
     @GetMapping

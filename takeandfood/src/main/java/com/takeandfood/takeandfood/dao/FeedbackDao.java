@@ -6,6 +6,7 @@ package com.takeandfood.takeandfood.dao;/*
 import com.takeandfood.takeandfood.beans.Feedback;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,9 +37,12 @@ public class FeedbackDao implements dao<Feedback, Long> {
     }
 
     @Override
-    public List<Feedback> getAll() {
+    public List<Feedback> getAll(Integer page) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Feedback ").list();
+        Query query = session.createQuery("from Feedback ");
+        query.setFirstResult((page - 1)*10);
+        query.setMaxResults(page*10);
+        return (List<Feedback>) query.list();
     }
 
     @Override

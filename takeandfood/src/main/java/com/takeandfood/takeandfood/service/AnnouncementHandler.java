@@ -37,8 +37,8 @@ public class AnnouncementHandler {
     }
 
     @Transactional
-    public List<AnnouncementDto> getAll() {
-        return announcementDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<AnnouncementDto> getAll(Integer page) {
+        return announcementDao.getAll(page).stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional

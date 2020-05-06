@@ -6,6 +6,7 @@ package com.takeandfood.takeandfood.dao;/*
 import com.takeandfood.takeandfood.beans.Announcement;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,9 +37,12 @@ public class AnnouncementDao implements dao<Announcement, Long> {
     }
 
     @Override
-    public List<Announcement> getAll() {
+    public List<Announcement> getAll(Integer page) {
         Session session = sessionFactory.getCurrentSession();
-        return (List<Announcement>) session.createQuery("from Announcement").list();
+        Query query = session.createQuery("from Announcement ");
+        query.setFirstResult((page - 1) * 10);
+        query.setMaxResults(page * 10);
+        return (List<Announcement>) query.list();
     }
 
     @Override

@@ -37,8 +37,8 @@ public class RestaurantHandler {
     }
 
     @Transactional
-    public List<RestaurantDto> getAll() {
-        return restaurantDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<RestaurantDto> getAll(Integer page) {
+        return restaurantDao.getAll(page).stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional

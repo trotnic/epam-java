@@ -3,12 +3,14 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
+import org.hibernate.envers.Audited;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@Audited
 @Table(name = "RESTAURANT")
 public class Restaurant {
 
@@ -25,6 +27,8 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<Announcement> announcements;
+
+    public Restaurant(){}
 
 
     public Long getId() { return id; }

@@ -40,8 +40,8 @@ public class FeedbackController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<FeedbackDto>> all() {
-        return ResponseEntity.ok(feedbackHandler.getAll());
+    public ResponseEntity<List<FeedbackDto>> all(@RequestParam("page") Integer page) {
+        return ResponseEntity.ok(feedbackHandler.getAll(page));
     }
 
     @PostMapping

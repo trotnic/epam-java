@@ -5,6 +5,7 @@ package com.takeandfood.takeandfood.beans;/*
 
 import com.takeandfood.takeandfood.collections.Roles;
 import com.takeandfood.takeandfood.collections.SocialStatuses;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.swing.text.html.Option;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
+@Audited
 @Table(name = "PERSON")
 public class Person {
 
@@ -41,6 +43,8 @@ public class Person {
 
     @Column(name = "STATUS")
     private Long status;
+
+    public Person(){}
 
     public Long getId() {
         return id;

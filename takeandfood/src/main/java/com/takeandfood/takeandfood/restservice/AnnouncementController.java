@@ -35,8 +35,8 @@ public class AnnouncementController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<AnnouncementDto>> all() {
-        return ResponseEntity.ok(announcementHandler.getAll());
+    public ResponseEntity<List<AnnouncementDto>> all(@RequestParam("page") Integer page) {
+        return ResponseEntity.ok(announcementHandler.getAll(page));
     }
 
     @GetMapping

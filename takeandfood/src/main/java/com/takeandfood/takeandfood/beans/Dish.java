@@ -3,6 +3,7 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
+import org.hibernate.envers.Audited;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.StringJoiner;
 
 
 @Entity
+@Audited
 @Table(name = "DISH")
 public class Dish {
 
@@ -27,6 +29,8 @@ public class Dish {
 
     @Column(name = "AMOUNT")
     private Long amount;
+
+    public Dish(){}
 
     public Long getId() { return id; }
     public Announcement getAnnouncement() { return announcement; }

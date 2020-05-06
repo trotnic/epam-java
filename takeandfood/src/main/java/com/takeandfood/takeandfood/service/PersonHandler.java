@@ -37,8 +37,8 @@ public class PersonHandler {
     }
 
     @Transactional
-    public List<PersonDto> getAll() {
-        return personDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<PersonDto> getAll(Integer page) {
+        return personDao.getAll(page).stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface dao<T, K> {
     void create(T item);
     Optional<T> get(K key);
-    List<T> getAll();
+    List<T> getAll(Integer page);
     T update(T updated);
     void delete(K key);
 }

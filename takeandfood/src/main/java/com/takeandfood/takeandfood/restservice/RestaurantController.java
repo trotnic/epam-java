@@ -41,8 +41,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<RestaurantDto>> all() {
-        return ResponseEntity.ok(restaurantHandler.getAll());
+    public ResponseEntity<List<RestaurantDto>> all(@RequestParam("page") Integer page) {
+        return ResponseEntity.ok(restaurantHandler.getAll(page));
     }
 
     @PostMapping

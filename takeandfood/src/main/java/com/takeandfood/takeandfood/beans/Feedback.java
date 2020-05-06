@@ -3,12 +3,15 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/21/20
  */
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 @Entity
+@Audited
 @Table(name = "FEEDBACK")
 public class Feedback {
 

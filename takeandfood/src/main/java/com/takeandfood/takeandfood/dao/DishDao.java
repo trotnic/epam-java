@@ -6,6 +6,7 @@ package com.takeandfood.takeandfood.dao;/*
 import com.takeandfood.takeandfood.beans.Dish;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -36,9 +37,12 @@ public class DishDao implements dao<Dish, Long> {
     }
 
     @Override
-    public List<Dish> getAll() {
+    public List<Dish> getAll(Integer page) {
         Session session = sessionFactory.getCurrentSession();
-        return (List<Dish>) session.createQuery("from Dish ").list();
+        Query query = session.createQuery("from Dish");
+        query.setFirstResult((page - 1)*10);
+        query.setMaxResults(page*10);
+        return (List<Dish>) query.list();
     }
 
     @Override

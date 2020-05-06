@@ -4,11 +4,13 @@ package com.takeandfood.takeandfood.beans;/*
  */
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@Audited
 @Table(name = "ANNOUNCEMENT")
 public class Announcement {
 
@@ -27,6 +29,8 @@ public class Announcement {
 
     @Column(name = "DATE")
     private Date date;
+
+    public Announcement(){}
 
     public Long getId() { return id; };
     public Date getDate() {

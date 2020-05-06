@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,9 +40,12 @@ public class PersonDao implements dao<Person, Long> {
     }
 
     @Override
-    public List<Person> getAll() {
+    public List<Person> getAll(Integer page) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Person ").list();
+        Query query = session.createQuery("from Person");
+        query.setFirstResult((page-1)*10);
+        query.setMaxResults(page*10);
+        return query.list();
     }
 
     @Override

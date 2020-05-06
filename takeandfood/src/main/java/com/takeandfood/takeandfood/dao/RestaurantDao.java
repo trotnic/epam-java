@@ -6,6 +6,7 @@ package com.takeandfood.takeandfood.dao;/*
 import com.takeandfood.takeandfood.beans.Restaurant;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,14 +33,16 @@ public class RestaurantDao implements dao<Restaurant, Long> {
     public Optional<Restaurant> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
         Restaurant restaurant = session.load(Restaurant.class, key);
-        System.out.println("restaurant: " + restaurant);
         return Optional.of(restaurant);
     }
 
     @Override
-    public List<Restaurant> getAll() {
+    public List<Restaurant> getAll(Integer page) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Restaurant").list();
+        Query query = session.createQuery("from Restaurant ");
+        query.setFirstResult((page-1)*10);
+        query.setMaxResults(page*10);
+        return (List<Restaurant>) query.list();
     }
 
     @Override

@@ -37,8 +37,8 @@ public class FeedbackHandler {
     }
 
     @Transactional
-    public List<FeedbackDto> getAll() {
-        return feedbackDao.getAll().stream().map(mapper::toDto).collect(Collectors.toList());
+    public List<FeedbackDto> getAll(Integer page) {
+        return feedbackDao.getAll(page).stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Transactional
