@@ -6,10 +6,10 @@ package com.takeandfood.takeandfood.dao;/*
 import java.util.List;
 import java.util.Optional;
 
-public interface dao<T, K> {
+public interface dao<T> {
     void create(T item);
-    Optional<T> get(K key);
+    Optional<T> get(Long key);
     List<T> getAll(Integer page);
     T update(T updated);
-    void delete(K key);
+    void delete(Long key);
 }

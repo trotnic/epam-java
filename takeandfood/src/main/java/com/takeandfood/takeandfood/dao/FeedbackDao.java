@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class FeedbackDao implements dao<Feedback, Long> {
+public class FeedbackDao implements dao<Feedback> {
 
     private SessionFactory sessionFactory;
 
@@ -56,5 +56,12 @@ public class FeedbackDao implements dao<Feedback, Long> {
         Session session = sessionFactory.getCurrentSession();
         Feedback feedback = session.load(Feedback.class, key);
         session.delete(feedback);
+    }
+
+    public List<Feedback> getByRestaurant(Long key) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Feedback where restaurant.id = :id");
+        query.setParameter("id", key);
+        return (List<Feedback>) query.list();
     }
 }

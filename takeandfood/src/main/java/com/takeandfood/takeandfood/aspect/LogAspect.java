@@ -18,7 +18,7 @@ public class LogAspect {
 
     @Before("execution(* com.takeandfood.takeandfood.service.*.*(..))")
     public void beforeCall(JoinPoint joinPoint) {
-        logger.info("Execute" + joinPoint.getSignature());
+        logger.info("Execute " + joinPoint.getSignature());
     }
 
 //TODO

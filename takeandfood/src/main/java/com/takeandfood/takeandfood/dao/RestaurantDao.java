@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class RestaurantDao implements dao<Restaurant, Long> {
+public class RestaurantDao implements dao<Restaurant> {
 
     private SessionFactory sessionFactory;
 

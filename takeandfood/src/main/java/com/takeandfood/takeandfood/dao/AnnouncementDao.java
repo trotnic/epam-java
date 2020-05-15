@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AnnouncementDao implements dao<Announcement, Long> {
+public class AnnouncementDao implements dao<Announcement> {
 
     private SessionFactory sessionFactory;
 

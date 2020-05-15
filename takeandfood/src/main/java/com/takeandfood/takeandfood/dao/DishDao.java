@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DishDao implements dao<Dish, Long> {
+public class DishDao implements dao<Dish> {
 
     private SessionFactory sessionFactory;
 

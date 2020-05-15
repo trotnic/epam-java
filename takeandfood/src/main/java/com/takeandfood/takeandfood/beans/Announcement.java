@@ -3,6 +3,9 @@ package com.takeandfood.takeandfood.beans;/*
  * @author vladislav on 4/19/20
  */
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 
@@ -17,6 +20,22 @@ public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RESTAURANT_ID")
@@ -39,9 +58,6 @@ public class Announcement {
     public List<Dish> getDishes() { return dishes; }
     public Restaurant getRestaurant() { return restaurant; }
 
-//    public void setDishes(List<Dish> dishes) { this.dishes = dishes; }
-    public void setRestaurant(Restaurant restaurant) { this.restaurant = restaurant; }
-    public void setDate(Date date) { this.date = date; }
 
     public void addDish(Dish dish) {
         dishes.add(dish);

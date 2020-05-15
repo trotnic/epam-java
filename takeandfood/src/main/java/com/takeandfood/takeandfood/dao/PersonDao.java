@@ -17,7 +17,7 @@ import java.util.Optional;
 
 
 @Repository
-public class PersonDao implements dao<Person, Long> {
+public class PersonDao implements dao<Person> {
 
     private SessionFactory sessionFactory;
 
@@ -38,6 +38,8 @@ public class PersonDao implements dao<Person, Long> {
         Person person = session.load(Person.class, key);
         return Optional.of(person);
     }
+
+//    ?page=..&amount=...
 
     @Override
     public List<Person> getAll(Integer page) {

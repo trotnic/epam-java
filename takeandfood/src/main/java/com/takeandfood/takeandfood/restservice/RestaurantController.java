@@ -4,6 +4,7 @@ package com.takeandfood.takeandfood.restservice;/*
  */
 
 import com.takeandfood.takeandfood.beans.Restaurant;
+import com.takeandfood.takeandfood.dto.FeedbackDto;
 import com.takeandfood.takeandfood.dto.RestaurantDto;
 import com.takeandfood.takeandfood.service.RestaurantHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,10 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<RestaurantDto> insert(@RequestBody RestaurantDto restaurant) {
         return ResponseEntity.ok(restaurantHandler.create(restaurant));
+    }
+
+    @GetMapping("/feedback")
+    public ResponseEntity<List<FeedbackDto>> getFeedback(@RequestParam("id") Long page) {
+        return ResponseEntity.ok(restaurantHandler.getFeedback(page));
     }
 }
