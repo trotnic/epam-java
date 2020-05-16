@@ -15,6 +15,15 @@ public class AnnouncementDto {
 
     private String date;
     private List<DishDto> dishes = new ArrayList<>();
+    private Long status;
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
@@ -53,8 +62,9 @@ public class AnnouncementDto {
         return new StringJoiner(", ", AnnouncementDto.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("restaurantId=" + restaurantId)
-                .add("dishes=" + dishes)
                 .add("date='" + date + "'")
+                .add("dishes=" + dishes)
+                .add("status=" + status)
                 .toString();
     }
 }

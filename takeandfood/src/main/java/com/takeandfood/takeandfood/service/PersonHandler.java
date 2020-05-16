@@ -52,4 +52,7 @@ public class PersonHandler {
     public PersonDto update(PersonDto person) {
         return mapper.toDto(personDao.update(mapper.toEntity(person)));
     }
+
+    @Transactional
+    public PersonDto getByLogin(String login) { return mapper.toDto(personDao.getByLogin(login).orElse(null));}
 }

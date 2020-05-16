@@ -44,7 +44,10 @@ public class Person {
     @Column(name = "STATUS")
     private Long status;
 
-    public Person(){}
+    public Person(){
+
+    }
+
 
     public Long getId() {
         return id;
@@ -59,11 +62,11 @@ public class Person {
         return email;
     }
     public String getPassword() { return password; }
-    public Roles getRole() {
-        return Roles.values()[Math.toIntExact(role)];
+    public Long getRole() {
+        return role;
     }
     public Restaurant getRestaurant() { return restaurant; }
-    public SocialStatuses getStatus() { return SocialStatuses.values()[Math.toIntExact(status)]; }
+    public Long getStatus() { return status; }
 
     public void setId(String id) { this.id = Long.parseLong(id); }
     public void setName(String name) { this.name = name; }

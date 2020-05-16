@@ -49,6 +49,9 @@ public class Announcement {
     @Column(name = "DATE")
     private Date date;
 
+    @Column(name = "STATUS")
+    private Long status;
+
     public Announcement(){}
 
     public Long getId() { return id; };
@@ -58,6 +61,13 @@ public class Announcement {
     public List<Dish> getDishes() { return dishes; }
     public Restaurant getRestaurant() { return restaurant; }
 
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
 
     public void addDish(Dish dish) {
         dishes.add(dish);
@@ -71,6 +81,7 @@ public class Announcement {
                 .add("restaurant=" + restaurant)
                 .add("dishes=" + dishes)
                 .add("date=" + date)
+                .add("status=" + status)
                 .toString();
     }
 
@@ -79,14 +90,15 @@ public class Announcement {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Announcement that = (Announcement) o;
-        return getId().equals(that.getId()) &&
-                getDishes().equals(that.getDishes()) &&
-                getRestaurant().equals(that.getRestaurant()) &&
-                getDate().equals(that.getDate());
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getRestaurant(), that.getRestaurant()) &&
+                Objects.equals(getDishes(), that.getDishes()) &&
+                Objects.equals(getDate(), that.getDate()) &&
+                Objects.equals(getStatus(), that.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getRestaurant(), getDishes(), getDate());
+        return Objects.hash(getId(), getRestaurant(), getDishes(), getDate(), getStatus());
     }
 }

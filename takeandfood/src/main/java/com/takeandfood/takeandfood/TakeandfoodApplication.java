@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
+
 public class TakeandfoodApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TakeandfoodApplication.class, args);

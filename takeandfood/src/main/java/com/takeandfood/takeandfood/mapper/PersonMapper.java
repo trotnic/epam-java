@@ -44,11 +44,14 @@ public class PersonMapper extends AbstractMapper<Person, PersonDto> {
     }
 
     private Long getRole(Person source) {
-        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : (long) source.getRole().ordinal();
+        return Objects.isNull(source) ||
+                Objects.isNull(source.getId()) ||
+                Objects.isNull(source.getRole())? null :
+                (long) source.getRole();
     }
 
     private Long getStatus(Person source) {
-        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : (long) source.getStatus().ordinal();
+        return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : (long) source.getStatus();
     }
 
     private Long getRestaurantId(Person source) {
@@ -57,6 +60,10 @@ public class PersonMapper extends AbstractMapper<Person, PersonDto> {
 
     @Override
     void dtoToEntitySpecificFields(PersonDto dtoSource, Person entityDestination) {
-        entityDestination.setRestaurant(restaurantDao.get(dtoSource.getRestaurantId()).orElse(null));
+        if (dtoSource.getRestaurantId() != null) {
+            entityDestination.setRestaurant(restaurantDao.get(dtoSource.getRestaurantId()).orElse(null));
+        } else {
+            entityDestination.setRestaurant(null);
+        }
     }
 }

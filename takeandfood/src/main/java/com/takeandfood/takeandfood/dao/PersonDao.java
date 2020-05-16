@@ -62,4 +62,11 @@ public class PersonDao implements dao<Person> {
         Person person = session.load(Person.class, key);
         session.delete(person);
     }
+
+    public Optional<Person> getByLogin(String login) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Person where login = :log");
+        query.setParameter("log", login);
+        return Optional.of((Person) query.uniqueResult());
+    }
 }
