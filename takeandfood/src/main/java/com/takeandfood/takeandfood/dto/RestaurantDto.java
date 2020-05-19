@@ -10,6 +10,7 @@ public class RestaurantDto {
     private String name;
     private List<PersonDto> administrators;
     private List<AnnouncementDto> announcements;
+    private String address;
 
     public Long getId() {
         return id;
@@ -41,6 +42,14 @@ public class RestaurantDto {
 
     public void setAnnouncements(List<AnnouncementDto> announcements) {
         this.announcements = announcements;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
 

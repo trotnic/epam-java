@@ -4,7 +4,6 @@ package com.takeandfood.takeandfood.collections;/*
  */
 
 public enum SocialStatuses {
-    UNDEFINED,
     STUDENT,
     EMPLOYEE,
     JOBLESS

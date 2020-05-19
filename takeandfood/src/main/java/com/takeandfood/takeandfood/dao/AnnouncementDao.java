@@ -4,6 +4,7 @@ package com.takeandfood.takeandfood.dao;/*
  */
 
 import com.takeandfood.takeandfood.beans.Announcement;
+import org.aspectj.org.eclipse.jdt.internal.compiler.ast.AND_AND_Expression;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

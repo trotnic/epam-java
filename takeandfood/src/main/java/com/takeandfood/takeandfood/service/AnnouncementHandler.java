@@ -4,14 +4,18 @@ package com.takeandfood.takeandfood.service;/*
  */
 
 import com.takeandfood.takeandfood.beans.Announcement;
+import com.takeandfood.takeandfood.beans.Order;
 import com.takeandfood.takeandfood.dao.AnnouncementDao;
+import com.takeandfood.takeandfood.dao.OrderDao;
 import com.takeandfood.takeandfood.dto.AnnouncementDto;
 import com.takeandfood.takeandfood.mapper.AnnouncementMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +25,9 @@ public class AnnouncementHandler {
     private AnnouncementMapper mapper;
 
     @Autowired
+    private OrderDao orderDao;
+
+    @Autowired
     public AnnouncementHandler(AnnouncementDao announcementDao, AnnouncementMapper mapper) {
         this.announcementDao = announcementDao;
         this.mapper = mapper;
@@ -28,6 +35,7 @@ public class AnnouncementHandler {
 
     @Transactional
     public void delete(Long id) {
+        orderDao.deleteWithAnnouncement(id);
         announcementDao.delete(id);
     }
 
@@ -50,5 +58,18 @@ public class AnnouncementHandler {
     @Transactional
     public AnnouncementDto update(AnnouncementDto announcement) {
         return mapper.toDto(announcementDao.update(mapper.toEntity(announcement)));
+    }
+
+    @Transactional
+    public List<AnnouncementDto> getOrderedByPerson(Long id) {
+        List<Order> orders = orderDao.getForPerson(id);
+        List<Announcement> announcements = new ArrayList<>();
+        orders.forEach(e -> {
+            Announcement announcement = announcementDao.get(e.getAnnouncement().getId()).orElse(null);
+            if(!Objects.isNull(announcement)) {
+                announcements.add(announcement);
+            }
+        });
+        return announcements.stream().map(mapper::toDto).collect(Collectors.toList());
     }
 }

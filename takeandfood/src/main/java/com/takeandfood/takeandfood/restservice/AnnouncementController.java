@@ -46,7 +46,12 @@ public class AnnouncementController {
 
     @PostMapping
     public ResponseEntity<AnnouncementDto> insert(@RequestBody AnnouncementDto announcement) {
+        System.out.println(announcement);
         return ResponseEntity.ok(announcementHandler.create(announcement));
     }
 
+    @GetMapping("/person")
+    public ResponseEntity<List<AnnouncementDto>> getForPerson(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(announcementHandler.getOrderedByPerson(id));
+    }
 }

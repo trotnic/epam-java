@@ -28,6 +28,9 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private List<Announcement> announcements;
 
+    @Column(name = "ADDRESS")
+    private String address;
+
     public Restaurant(){}
 
 
@@ -52,13 +55,12 @@ public class Restaurant {
         this.announcements = announcements;
     }
 
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Restaurant.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
-                .add("administrators=" + administrators)
-                .add("name='" + name + "'")
-                .toString();
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
@@ -69,11 +71,23 @@ public class Restaurant {
         return Objects.equals(getId(), that.getId()) &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getAdministrators(), that.getAdministrators()) &&
-                Objects.equals(getAnnouncements(), that.getAnnouncements());
+                Objects.equals(getAnnouncements(), that.getAnnouncements()) &&
+                Objects.equals(getAddress(), that.getAddress());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getAdministrators(), getAnnouncements());
+        return Objects.hash(getId(), getName(), getAdministrators(), getAnnouncements(), getAddress());
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Restaurant.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("administrators=" + administrators)
+                .add("announcements=" + announcements)
+                .add("address='" + address + "'")
+                .toString();
     }
 }

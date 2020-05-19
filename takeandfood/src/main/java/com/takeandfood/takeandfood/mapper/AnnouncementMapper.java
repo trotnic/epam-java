@@ -51,7 +51,7 @@ public class AnnouncementMapper extends AbstractMapper<Announcement, Announcemen
     }
 
     private String getStringDate(Announcement source) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         String date = sdf.format(source.getDate());
         return date;
@@ -64,13 +64,12 @@ public class AnnouncementMapper extends AbstractMapper<Announcement, Announcemen
     }
 
     private Date getDate(AnnouncementDto source) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             return sdf.parse(source.getDate());
         } catch (ParseException e) {
             return new Date();
         }
-
     }
 }
