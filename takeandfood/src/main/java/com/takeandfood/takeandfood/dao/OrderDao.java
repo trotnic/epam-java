@@ -34,8 +34,7 @@ public class OrderDao implements dao<Order> {
     @Override
     public Optional<Order> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Order order = session.load(Order.class, key);
-        return Optional.of(order);
+        return session.byId(Order.class).loadOptional(key);
     }
 
     @Override

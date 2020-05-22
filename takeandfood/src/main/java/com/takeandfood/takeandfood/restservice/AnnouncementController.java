@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequestMapping("/announcement")
 @RestController
@@ -25,33 +26,57 @@ public class AnnouncementController {
 
     @DeleteMapping
     public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
-        announcementHandler.delete(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        if (announcementHandler.delete(id) && id > 0) {
+            return ResponseEntity.ok(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping
-    public ResponseEntity<Object> update(@RequestBody AnnouncementDto announcement) {
-        return ResponseEntity.ok(announcementHandler.update(announcement));
+    public ResponseEntity<AnnouncementDto> update(@RequestBody AnnouncementDto announcement) {
+        if(announcement.getId() > 0) {
+            AnnouncementDto announcementDto = announcementHandler.update(announcement);
+            if(announcementDto != null) {
+                return ResponseEntity.ok(announcementDto);
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<AnnouncementDto>> all(@RequestParam("page") Integer page) {
-        return ResponseEntity.ok(announcementHandler.getAll(page));
+        if(page > 0) {
+            return ResponseEntity.ok(announcementHandler.getAll(page));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping
     public ResponseEntity<AnnouncementDto> get(@RequestParam("id") Long id) {
+        AnnouncementDto announcementDto = announcementHandler.get(id);
+        if (announcementDto == null) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(announcementHandler.get(id));
     }
 
     @PostMapping
     public ResponseEntity<AnnouncementDto> insert(@RequestBody AnnouncementDto announcement) {
-        System.out.println(announcement);
-        return ResponseEntity.ok(announcementHandler.create(announcement));
+        announcement = announcementHandler.create(announcement);
+        if(announcement == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(announcement);
     }
 
     @GetMapping("/person")
     public ResponseEntity<List<AnnouncementDto>> getForPerson(@RequestParam("id") Long id) {
-        return ResponseEntity.ok(announcementHandler.getOrderedByPerson(id));
+        if(id > 0) {
+            List<AnnouncementDto> list = announcementHandler.getOrderingsByPerson(id);
+                if(list != null) {
+                    return ResponseEntity.ok(list);
+                }
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -3,6 +3,7 @@ package com.takeandfood.takeandfood.dao;/*
  * @author vladislav on 4/19/20
  */
 
+import com.takeandfood.takeandfood.beans.Announcement;
 import com.takeandfood.takeandfood.beans.Person;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,8 +36,7 @@ public class PersonDao implements dao<Person> {
     @Override
     public Optional<Person> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Person person = session.load(Person.class, key);
-        return Optional.of(person);
+        return session.byId(Person.class).loadOptional(key);
     }
 
 //    ?page=..&amount=...
@@ -67,6 +67,6 @@ public class PersonDao implements dao<Person> {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Person where login = :log");
         query.setParameter("log", login);
-        return Optional.of((Person) query.uniqueResult());
+        return (Optional<Person>) query.uniqueResultOptional();
     }
 }

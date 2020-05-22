@@ -32,8 +32,7 @@ public class DishDao implements dao<Dish> {
     @Override
     public Optional<Dish> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Dish dish = session.load(Dish.class, key);
-        return Optional.of(dish);
+        return session.byId(Dish.class).loadOptional(key);
     }
 
     @Override

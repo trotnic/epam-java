@@ -32,8 +32,7 @@ public class FeedbackDao implements dao<Feedback> {
     @Override
     public Optional<Feedback> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Feedback feedback = session.load(Feedback.class, key);
-        return Optional.of(feedback);
+        return session.byId(Feedback.class).loadOptional(key);
     }
 
     @Override

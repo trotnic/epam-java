@@ -27,32 +27,58 @@ public class OrderController {
 
     @DeleteMapping
     public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
-        orderHandler.delete(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        if(orderHandler.delete(id) && id > 0) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping
     public ResponseEntity<OrderDto> update(@RequestBody OrderDto order) {
-        return ResponseEntity.ok(orderHandler.update(order));
+        if(order.getId() > 0) {
+            OrderDto orderDto = orderHandler.update(order);
+            if(orderDto != null) {
+                return ResponseEntity.ok(orderDto);
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping
     public ResponseEntity<OrderDto> get(@RequestParam("id") Long id) {
+        OrderDto orderDto = orderHandler.get(id);
+        if(orderDto == null) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(orderHandler.get(id));
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<OrderDto>> all(@RequestParam("page") Integer page) {
-        return ResponseEntity.ok(orderHandler.getAll(page));
+        if(page > 0) {
+            return ResponseEntity.ok(orderHandler.getAll(page));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping
     public ResponseEntity<OrderDto> insert(@RequestBody OrderDto order) {
+        order = orderHandler.create(order);
+        if(order == null) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(orderHandler.create(order));
+
     }
 
     @GetMapping("/restaurant")
     public ResponseEntity<List<OrderDto>> getForRestaurant(@RequestParam("id") Long id) {
-        return ResponseEntity.ok(orderHandler.getForRestaurant(id));
+        if(id > 0) {
+            List<OrderDto> list = orderHandler.getForRestaurant(id);
+            if(list != null) {
+                return ResponseEntity.ok(list);
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

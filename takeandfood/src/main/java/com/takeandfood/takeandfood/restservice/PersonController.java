@@ -25,13 +25,19 @@ public class PersonController {
 
     @DeleteMapping
     public ResponseEntity<Object> delete(@RequestParam("id") Long id) {
-        personHandler.delete(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        if (id > 0 && personHandler.delete(id)) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping
     public ResponseEntity<PersonDto> update(@RequestBody PersonDto person) {
-        return ResponseEntity.ok(personHandler.update(person));
+        PersonDto personDto = personHandler.update(person);
+        if(personDto != null) {
+            return ResponseEntity.ok(personHandler.update(person));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/all")
@@ -41,11 +47,20 @@ public class PersonController {
 
     @GetMapping
     public ResponseEntity<PersonDto> get(@RequestParam("id") Long id) {
+        PersonDto personDto = personHandler.get(id);
+        if(personDto == null) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(personHandler.get(id));
     }
 
     @PostMapping
-    public ResponseEntity<PersonDto> insert(@RequestBody PersonDto person) {
-        return ResponseEntity.ok(personHandler.create(person));
+    public ResponseEntity<PersonDto> insert(@RequestBody PersonDto personDto) {
+        personDto = personHandler.create(personDto);
+        if(personDto == null) {
+                return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(personDto);
+
     }
 }

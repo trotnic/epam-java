@@ -10,11 +10,13 @@ import com.takeandfood.takeandfood.dto.FeedbackDto;
 import com.takeandfood.takeandfood.dto.RestaurantDto;
 import com.takeandfood.takeandfood.mapper.FeedbackMapper;
 import com.takeandfood.takeandfood.mapper.RestaurantMapper;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,13 +40,18 @@ public class RestaurantHandler {
     }
 
     @Transactional
-    public void delete(Long id) {
-        this.restaurantDao.delete(id);
+    public boolean delete(Long id) {
+        if(restaurantDao.get(id).isPresent()) {
+            restaurantDao.delete(id);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
     public RestaurantDto get(Long id) {
-        return restaurantMapper.toDto(restaurantDao.get(id).orElse(null));
+        Optional<Restaurant> restaurant = restaurantDao.get(id);
+        return restaurant.map(value -> restaurantMapper.toDto(value)).orElse(null);
     }
 
     @Transactional
@@ -54,18 +61,28 @@ public class RestaurantHandler {
 
     @Transactional
     public RestaurantDto create(RestaurantDto restaurant) {
-        Restaurant rest = restaurantMapper.toEntity(restaurant);
-        restaurantDao.create(rest);
-        return restaurantMapper.toDto(rest);
+        try {
+            Restaurant rest = restaurantMapper.toEntity(restaurant);
+            restaurantDao.create(rest);
+            return restaurantMapper.toDto(rest);
+        } catch(ObjectNotFoundException e) {
+            return null;
+        }
     }
 
     @Transactional
     public RestaurantDto update(RestaurantDto restaurant) {
+        if(!restaurantDao.get(restaurant.getId()).isPresent()) {
+            return null;
+        }
         return restaurantMapper.toDto(restaurantDao.update(restaurantMapper.toEntity(restaurant)));
     }
 
     @Transactional
     public List<FeedbackDto> getFeedback(Long id) {
+        if(!restaurantDao.get(id).isPresent()) {
+            return null;
+        }
         return feedbackDao.getByRestaurant(id).stream().map(feedbackMapper::toDto).collect(Collectors.toList());
     }
 }

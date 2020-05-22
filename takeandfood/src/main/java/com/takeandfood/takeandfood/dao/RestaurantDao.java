@@ -32,8 +32,7 @@ public class RestaurantDao implements dao<Restaurant> {
     @Override
     public Optional<Restaurant> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Restaurant restaurant = session.load(Restaurant.class, key);
-        return Optional.of(restaurant);
+        return session.byId(Restaurant.class).loadOptional(key);
     }
 
     @Override

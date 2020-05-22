@@ -5,6 +5,7 @@ package com.takeandfood.takeandfood.dao;/*
 
 import com.takeandfood.takeandfood.beans.Announcement;
 import org.aspectj.org.eclipse.jdt.internal.compiler.ast.AND_AND_Expression;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -33,8 +34,7 @@ public class AnnouncementDao implements dao<Announcement> {
     @Override
     public Optional<Announcement> get(Long key) {
         Session session = sessionFactory.getCurrentSession();
-        Announcement announcement = session.load(Announcement.class, key);
-        return Optional.of(announcement);
+        return session.byId(Announcement.class).loadOptional(key);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class AnnouncementDao implements dao<Announcement> {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Announcement ");
         query.setFirstResult((page - 1) * 10);
-        query.setMaxResults(page * 10);
+        query.setMaxResults(page * 40);
         return (List<Announcement>) query.list();
     }
 

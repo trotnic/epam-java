@@ -7,11 +7,13 @@ import com.takeandfood.takeandfood.beans.Person;
 import com.takeandfood.takeandfood.dao.PersonDao;
 import com.takeandfood.takeandfood.dto.PersonDto;
 import com.takeandfood.takeandfood.mapper.PersonMapper;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +29,18 @@ public class PersonHandler {
     }
 
     @Transactional
-    public void delete(Long id) {
-        personDao.delete(id);
+    public boolean delete(Long id) {
+        if(personDao.get(id).isPresent()) {
+            personDao.delete(id);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
     public PersonDto get(Long id) {
-        return mapper.toDto(personDao.get(id).orElse(null));
+        Optional<Person> person = personDao.get(id);
+        return person.map(value -> mapper.toDto(value)).orElse(null);
     }
 
     @Transactional
@@ -43,16 +50,26 @@ public class PersonHandler {
 
     @Transactional
     public PersonDto create(PersonDto person) {
-        Person pers = mapper.toEntity(person);
-        personDao.create(pers);
-        return mapper.toDto(pers);
+        try {
+            Person toCreate = mapper.toEntity(person);
+            personDao.create(toCreate);
+            return mapper.toDto(toCreate);
+        } catch(ObjectNotFoundException e) {
+            return null;
+        }
     }
 
     @Transactional
     public PersonDto update(PersonDto person) {
+        if(!personDao.get(person.getId()).isPresent()) {
+            return null;
+        }
         return mapper.toDto(personDao.update(mapper.toEntity(person)));
     }
 
     @Transactional
-    public PersonDto getByLogin(String login) { return mapper.toDto(personDao.getByLogin(login).orElse(null));}
+    public PersonDto getByLogin(String login) {
+        Optional<Person> person = personDao.getByLogin(login);
+        return person.map(value -> mapper.toDto(value)).orElse(null);
+    }
 }
